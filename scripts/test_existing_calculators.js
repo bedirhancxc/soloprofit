@@ -9,9 +9,13 @@ function calculator(file, values) {
   const match = html.match(/<script>([\s\S]*?)<\/script>/);
   assert.ok(match, "Missing embedded calculator script in " + file);
   const elements = Object.entries(values).map(([name, value]) => ({
-    name, value: String(value), validity: {valid: true}
+    name, value: String(value), validity: {valid: true}, invalid: false,
+    setAttribute(key, val) {if(key==="aria-invalid")this.invalid=val==="true"},
+    removeAttribute(key) {if(key==="aria-invalid")this.invalid=false},
+    closest() {return {firstChild:{textContent: this.name}}}
   }));
   const form = {elements, addEventListener() {}};
+  elements.namedItem = name => elements.find(el => el.name === name);
   const answer = {textContent: ""};
   const context = vm.createContext({
     document: {getElementById: id => ({calculator: form, answer})[id]}
@@ -19,6 +23,7 @@ function calculator(file, values) {
   vm.runInContext(match[1], context, {timeout: 1000});
   return {
     answer,
+    isInvalid(name) {return elements.find(el=>el.name===name).invalid},
     set(name, value) {
       const input = elements.find(el => el.name === name);
       assert.ok(input, "Missing field: " + name);
@@ -34,8 +39,10 @@ const freelance = calculator("freelance-hourly-rate/index.html", {
 });
 assert.equal(freelance.answer.textContent, "$78.26 per billable hour");
 assert.match(freelance.set("hours", 0), /greater than zero/i);
-assert.match(freelance.set("hours", ""), /valid non-negative/i);
+assert.equal(freelance.isInvalid("hours"),true);
+assert.match(freelance.set("hours", ""), /hours/i);
 freelance.set("hours", 25);
+assert.equal(freelance.isInvalid("hours"),false);
 assert.match(freelance.set("weeks", 53), /no more than 52/i);
 freelance.set("weeks", 46);
 freelance.set("income", "1e308");
