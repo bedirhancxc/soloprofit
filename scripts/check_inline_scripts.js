@@ -20,6 +20,29 @@ for (const url of urls) {
   assert.match(html, /id="main-content"/, "Missing main anchor: " + file);
   assert.match(html, /class="site-header"/, "Missing navigation: " + file);
   assert.match(html, /href="(?:\.\.\/)?assets\/site\.css"/, "Missing shared responsive stylesheet: " + file);
+  // Verify same-page and cross-page navigation fragments actually exist.
+  for (const [, href] of html.matchAll(/<a\\b[^>]*\\bhref="([^"]+)"/g)) {
+    if (!href.includes("#") || /^(?:https?:|mailto:|tel:)/i.test(href)) continue;
+    const resolved = new URL(href, url);
+    if (resolved.origin !== new URL(url).origin || !resolved.pathname.startsWith("/soloprofit/")) continue;
+    const targetPath = resolved.pathname.replace(/^\\/soloprofit\\/?/, "");
+    const targetFile = path.join(targetPath, "index.html");
+    assert.ok(fs.existsSync(targetFile), "Broken navigation destination: " + href + " in " + file);
+    const fragment = decodeURIComponent(resolved.hash.slice(1));
+    if (!fragment) continue;
+    const targetHtml = fs.readFileSync(targetFile, "utf8");
+    assert.ok(targetHtml.includes('id="' + fragment + '"') || targetHtml.includes("id='" + fragment + "'"),
+      "Broken navigation fragment #" + fragment + " in " + file);
+  }
   console.log("PASS: " + file);
 }
 console.log("PASS: all " + urls.length + " pages have valid inline JavaScript and responsive navigation.");
+
+const css = fs.readFileSync("assets/site.css", "utf8");
+assert.match(css, /@media\\s*\\(max-width:\\s*620px\\)/, "Missing phone layout breakpoint");
+assert.match(css, /@media\\s*\\(min-width:\\s*621px\\)\\s*and\\s*\\(max-width:\\s*900px\\)/, "Missing tablet layout breakpoint");
+assert.match(css, /\\.calculator-layout\\s*\\{grid-template-columns:1fr\\}/, "Tablet calculator layout must not be cramped");
+assert.match(css, /\\.calc-tabs\\s*\\{display:grid;grid-template-columns:repeat\\(2,minmax\\(0,1fr\\)\\)/, "Phone calculator tabs need two columns");
+assert.match(css, /\\.inner-page \\.card form\\s*\\{grid-template-columns:1fr\\}/, "Phone detail forms need one column");
+assert.match(css, /\\[hidden\\]\\s*\\{display:none!important\\}/, "Hidden result panels must stay hidden");
+console.log("PASS: navigation fragments and static phone/tablet CSS checks");
