@@ -19,6 +19,6 @@
  if(v.weeks<=0||v.weeks>52){form.elements.namedItem("weeks").setAttribute("aria-invalid","true");answer.textContent="Weeks worked per year must be between 1 and 52.";return}
  const total=v.income+v.expenses,hours=v.hours*v.weeks;
  const rate=total/hours;
- if(!Number.isFinite(rate)){answer.textContent="Values are too large. Try smaller numbers.";return}
+ if(!Number.isFinite(rate)){for(const el of form.elements){if(el.name)el.setAttribute("aria-invalid","true")}answer.textContent="Values are too large. Try smaller numbers.";return}
  answer.textContent=new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",minimumFractionDigits:2,maximumFractionDigits:2}).format(rate)+" per billable hour";
 }form.addEventListener("input",calc);form.addEventListener("submit",e=>e.preventDefault());calc();</script></body></html>
