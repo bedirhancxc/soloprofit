@@ -25,7 +25,7 @@ for (const url of urls) {
     if (!href.includes("#") || /^(?:https?:|mailto:|tel:)/i.test(href)) continue;
     const resolved = new URL(href, url);
     if (resolved.origin !== new URL(url).origin || !resolved.pathname.startsWith("/soloprofit/")) continue;
-    const targetPath = resolved.pathname.replace(/^\\/soloprofit\\/?/, "");
+    const targetPath = resolved.pathname.slice("/soloprofit/".length);
     const targetFile = path.join(targetPath, "index.html");
     assert.ok(fs.existsSync(targetFile), "Broken navigation destination: " + href + " in " + file);
     const fragment = decodeURIComponent(resolved.hash.slice(1));
