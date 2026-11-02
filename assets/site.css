@@ -163,7 +163,7 @@ input[aria-invalid="true"]:focus-visible{outline-color:#b33a2d}
 }
 
 /* UX: give secondary-page forms room at tablet widths instead of squeezing labels. */
-@media (min-width:621px) and (max-width:760px){
+@media (min-width:621px) and (max-width:900px){
   .inner-page .card form{grid-template-columns:minmax(0,1fr)}
   .inner-page .card form>.fields{grid-column:1}
 }
