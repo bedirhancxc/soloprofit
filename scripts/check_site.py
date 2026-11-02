@@ -11,6 +11,8 @@ class Parser(HTMLParser):
         super().__init__()
         self.links = []
         self.h1_count = 0
+        self.heading_levels = []
+        self.ids = set()
         self.robots_noindex = False
         self.canonicals = []
         self.in_title = False
@@ -18,6 +20,10 @@ class Parser(HTMLParser):
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
+        if attrs.get("id"):
+            self.ids.add(attrs["id"])
+        if tag in ("h1", "h2", "h3", "h4", "h5", "h6"):
+            self.heading_levels.append(int(tag[1]))
         if tag == "a" and attrs.get("href"):
             self.links.append(attrs["href"])
         if tag == "h1":
@@ -55,6 +61,8 @@ for url in urls:
     parser = Parser()
     parser.feed(html)
     assert parser.h1_count == 1, f"Expected one H1: {file}"
+    assert parser.heading_levels[0] == 1, f"First heading must be H1: {file}"
+    assert all(b <= a + 1 for a, b in zip(parser.heading_levels, parser.heading_levels[1:])), f"Skipped heading level: {file}"
     assert parser.title_text.strip(), f"Empty page title: {file}"
     assert not parser.robots_noindex, f"Indexed page marked noindex: {file}"
     assert parser.canonicals == [url], f"Missing or duplicate canonical: {file}"
@@ -62,7 +70,8 @@ for url in urls:
     for link in parser.links:
         if link.startswith(("mailto:", "tel:", "javascript:")):
             continue
-        resolved = urljoin(url, link).split("#", 1)[0]
+        resolved_with_fragment = urljoin(url, link)
+        resolved = resolved_with_fragment.split("#", 1)[0]
         if not resolved.startswith(BASE):
             continue
         rel = unquote(urlparse(resolved).path).removeprefix("/soloprofit/").strip("/")
@@ -71,6 +80,13 @@ for url in urls:
             assert target.is_file(), f"Broken internal link in {file}: {link}"
         else:
             assert (target / "index.html").is_file(), f"Broken internal link in {file}: {link}"
+        fragment = urlparse(resolved_with_fragment).fragment
+        if fragment:
+            target_file = target if target.suffix in (".html", ".xml") else target / "index.html"
+            if target_file.suffix == ".html":
+                target_parser = Parser()
+                target_parser.feed(target_file.read_text(encoding="utf-8"))
+                assert unquote(fragment) in target_parser.ids, f"Broken internal section link in {file}: {link}"
     assert "<title>" in html and 'name="description"' in html, f"Missing metadata: {file}"
     assert 'type="number"' in html, f"Missing numeric input: {file}"
     assert "aria-live" in html, f"Missing accessible result: {file}"
