@@ -23,6 +23,8 @@ jobs:
         run: node scripts/test_break_even.js
       - name: Test existing calculator inputs and results
         run: node scripts/test_existing_calculators.js
+      - name: Test markup calculator validation and formulas
+        run: node scripts/test_markup.js
       - name: Test homepage calculator behavior
         run: node scripts/test_home_calculators.js
       - name: Check page scripts and responsive navigation
