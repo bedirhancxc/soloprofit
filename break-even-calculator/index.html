@@ -19,7 +19,7 @@
 </header>
 <main id="main-content"><p class="breadcrumb"><a href="../#all-tools">← All calculators</a></p>
 <h1>Break-Even Point Calculator</h1>
-<p>See how many units you need to sell to cover monthly costs. Check the sales revenue and profit at your expected volume.</p>
+<p>Find the units and revenue needed to cover your costs. Estimate profit at your expected sales volume.</p>
 <section class="card" aria-labelledby="calculator-title">
 <h2 id="calculator-title" style="margin-top:0">Calculate break-even sales</h2>
 <form id="calculator" novalidate>
@@ -27,14 +27,14 @@
 <label for="fixed">Monthly fixed costs ($)<input id="fixed" type="number" min="0" step="any" value="3000" inputmode="decimal" required><small>For example: rent, software and salaries</small></label>
 <label for="price">Selling price per unit ($)<input id="price" type="number" min="0" step="any" value="50" inputmode="decimal" required><small>What you charge for one sale</small></label>
 <label for="variable">Variable cost per unit ($)<input id="variable" type="number" min="0" step="any" value="20" inputmode="decimal" required><small>For example: materials, delivery and fees</small></label>
-<label for="quantity">Expected monthly units sold<input id="quantity" type="number" min="0" step="1" value="150" inputmode="numeric" required><small>How many units you expect to sell</small></label>
+<label for="quantity">Expected monthly units sold<input id="quantity" type="number" min="0" step="1" value="150" inputmode="numeric" required><small>Used to estimate monthly profit</small></label>
 </div>
 </form>
 <div class="results" role="status" aria-live="polite" aria-atomic="true">
 <output id="answer">Enter values to see your result.</output>
 <div class="metrics" id="metrics" hidden>
-<div class="metric"><span>Sales needed to break even</span><strong id="revenue"></strong></div>
-<div class="metric"><span>Amount left per unit after variable costs</span><strong id="contribution"></strong></div>
+<div class="metric"><span>Revenue needed to break even</span><strong id="revenue"></strong></div>
+<div class="metric"><span>Contribution per unit</span><strong id="contribution"></strong></div>
 <div class="metric"><span>Estimated monthly profit</span><strong id="profit"></strong></div>
 </div>
 </div>
