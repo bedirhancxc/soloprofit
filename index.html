@@ -117,7 +117,7 @@ function compute(){
   $("copy").disabled=false;$("csv").disabled=false;
 }
 $("tabs").addEventListener("click",e=>{const b=e.target.closest("button[data-tab]");if(!b)return;active=b.dataset.tab;for(const tab of $("tabs").children)tab.setAttribute("aria-pressed",String(tab===b));render()});
-$("copy").addEventListener("click",async()=>{if(last&&navigator.clipboard)try{await navigator.clipboard.writeText(last);$("copyStatus").textContent="Copied to clipboard."}catch{$("copyStatus").textContent="Could not copy. Select the result text instead."}});
+$("copy").addEventListener("click",async()=>{if(!last)return;if(!navigator.clipboard||!navigator.clipboard.writeText){$("copyStatus").textContent="Clipboard unavailable. Select the result text to copy it.";return}try{await navigator.clipboard.writeText(last);$("copyStatus").textContent="Copied to clipboard."}catch{$("copyStatus").textContent="Could not copy. Select the result text instead."}});
 $("csv").addEventListener("click",()=>{if(!last)return;const m=models[active];let rows=[["Field","Value"],...m.fields.map(([key,label])=>[label,$(key).value]),["Result",last]];const csv=rows.map(r=>r.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(",")).join("\r\n");const url=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));const a=document.createElement("a");a.href=url;a.download="soloprofit-"+active+".csv";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)});
 $("year").textContent=new Date().getFullYear();render();
 </script>
