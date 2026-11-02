@@ -180,7 +180,7 @@ input[aria-invalid="true"]:focus-visible{outline-color:#b33a2d}
   .calc-tabs button[aria-pressed=true]{
     border:2px solid Highlight;
     box-shadow:none;
-    color:HighlightText;
+    color:CanvasText;
   }
   .site-header a:focus-visible,
   .calc-tabs button:focus-visible,
