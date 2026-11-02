@@ -78,7 +78,7 @@ footer a{color:var(--blue)}
 /* Consistent secondary-page layout */
 .inner-page main{max-width:900px}
 .inner-page main>h1{margin:4px 0 14px;font-size:clamp(1.85rem,3.4vw,2.6rem)}
-.inner-page main>p:first-of-type:not(.breadcrumb){font-size:1.08rem;color:var(--muted);max-width:720px}
+.inner-page main>h1+p{font-size:1.08rem;color:var(--muted);max-width:720px}
 .inner-page main>h2,.inner-page article>h2{margin:34px 0 12px}
 .inner-page main>h3,.inner-page article>h3{margin:24px 0 8px}
 .inner-page main>p,.inner-page article>p{max-width:820px}
