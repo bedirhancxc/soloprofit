@@ -11,6 +11,8 @@ h3{font-size:1.16rem}
 p{margin:0 0 16px}
 a{color:var(--blue);text-underline-offset:3px}
 a:hover{color:var(--blue-dark)}
+.skip-link{position:absolute;left:12px;top:-80px;z-index:100;background:white;color:var(--blue-dark);padding:12px 18px;border-radius:9px;border:2px solid var(--blue)}
+.skip-link:focus{top:12px}
 a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #69a5f5;outline-offset:3px}
 [hidden]{display:none!important}
 .site-header{background:var(--navy);color:white;padding:0 20px}
@@ -76,7 +78,7 @@ footer a{color:var(--blue)}
 /* Consistent secondary-page layout */
 .inner-page main{max-width:900px}
 .inner-page main>h1{margin:4px 0 14px;font-size:clamp(1.85rem,3.4vw,2.6rem)}
-.inner-page main>p:first-of-type{font-size:1.08rem;color:var(--muted);max-width:720px}
+.inner-page main>p:first-of-type:not(.breadcrumb){font-size:1.08rem;color:var(--muted);max-width:720px}
 .inner-page main>h2,.inner-page article>h2{margin:34px 0 12px}
 .inner-page main>h3,.inner-page article>h3{margin:24px 0 8px}
 .inner-page main>p,.inner-page article>p{max-width:820px}
@@ -91,7 +93,7 @@ footer a{color:var(--blue)}
 .inner-page article{max-width:none}
 .inner-page article>label{display:inline-block;width:calc(50% - 10px);vertical-align:top;margin:0 16px 15px 0}
 .inner-page article>label+label{margin-right:0}
-.inner-page article>output{margin:18px 0;background:var(--soft);border:1px solid #cfe3ff;padding:18px;border-radius:12px}
+.inner-page article>output{margin:12px 0 18px;background:var(--soft);border:1px solid #cfe3ff;padding:18px;border-radius:12px;white-space:pre-line;line-height:1.6}
 .inner-page .metric{background:white;padding:13px;border-radius:10px}
 .inner-page .metric span{color:var(--muted);font-size:.86rem;display:block}
 .inner-page .metric strong{font-size:1.16rem}
