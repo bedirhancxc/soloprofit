@@ -21,6 +21,8 @@ jobs:
         run: python3 scripts/check_site.py
       - name: Test break-even calculator calculations
         run: node scripts/test_break_even.js
+      - name: Test existing calculator inputs and results
+        run: node scripts/test_existing_calculators.js
       - name: Check page scripts and responsive navigation
         run: node scripts/check_inline_scripts.js
   uptime:
