@@ -54,7 +54,15 @@ const margin = calculator("profit-margin/index.html", {
 assert.equal(margin.answer.textContent, "30% profit margin");
 assert.equal(margin.set("cost", 12000), "-20% profit margin (loss)");
 assert.match(margin.set("revenue", 0), /greater than \$0/i);
-assert.match(margin.set("revenue", ""), /valid non-negative/i);
+assert.equal(margin.isInvalid("revenue"),true);
+assert.match(margin.set("revenue", ""), /total revenue.*valid non-negative/i);
+assert.equal(margin.isInvalid("revenue"),true);
+margin.set("revenue", 10000);
+assert.equal(margin.isInvalid("revenue"),false);
+assert.match(margin.set("cost", ""), /total costs.*valid non-negative/i);
+assert.equal(margin.isInvalid("cost"),true);
+margin.set("cost", 7000);
+assert.equal(margin.isInvalid("cost"),false);
 
 const subscription = calculator("subscription-break-even/index.html", {
   price: 29, variable: 4, fixed: 1200
