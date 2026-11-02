@@ -68,16 +68,21 @@ const answer=document.getElementById("answer"),metrics=document.getElementById("
 const money=n=>n.toLocaleString("en-US",{style:"currency",currency:"USD",maximumFractionDigits:2});
 function calc(){
   const v={};
+  for(const id of ids)fields[id].removeAttribute("aria-invalid");
+  const labels={fixed:"Monthly fixed costs",price:"Selling price per unit",variable:"Variable cost per unit",quantity:"Expected monthly units sold"};
   for(const id of ids){
-    const raw=fields[id].value.trim();
+    const field=fields[id],raw=field.value.trim();
     v[id]=Number(raw);
-    if(raw===""||!Number.isFinite(v[id])||v[id]<0||(id==="quantity"&&!Number.isSafeInteger(v[id]))){
-      answer.textContent="Enter valid non-negative values (whole numbers for units sold).";
+    if(raw===""||!Number.isFinite(v[id])||v[id]<0||!field.validity.valid||(id==="quantity"&&!Number.isSafeInteger(v[id]))){
+      field.setAttribute("aria-invalid","true");
+      answer.textContent=labels[id]+(id==="quantity"?" must be a non-negative whole number.":" must be a valid non-negative number.");
       metrics.hidden=true;return;
     }
   }
   const perUnit=v.price-v.variable;
   if(perUnit<=0&&v.fixed>0){
+    fields.price.setAttribute("aria-invalid","true");
+    fields.variable.setAttribute("aria-invalid","true");
     answer.textContent="No break-even point: the selling price must exceed the variable cost per unit.";
     metrics.hidden=true;return;
   }
