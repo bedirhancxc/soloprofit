@@ -5,17 +5,18 @@
 <nav class="site-links" aria-label="Primary"><a href="../#quick-calculators">Quick tools</a><a href="../#all-tools">All calculators</a><a href="../#how-it-works">How it works</a></nav>
 </div>
 </header><main id="main-content"><p class="breadcrumb"><a href="../#all-tools">← All calculators</a></p><h1>Subscription Break-even Calculator</h1><p>Find how many paying subscribers cover your monthly costs. Results update as you type.</p><section class="card"><form id="calculator"><label>Subscription price per month ($)<input type="number" name="price" min="0" step="any" inputmode="decimal" value="29" required></label><label>Cost per subscriber per month ($)<input type="number" name="variable" min="0" step="any" inputmode="decimal" value="4" required></label><label>Monthly fixed costs ($)<input type="number" name="fixed" min="0" step="any" inputmode="decimal" value="1200" required></label></form><output id="answer" aria-live="polite" aria-atomic="true"></output></section><h2>How to calculate</h2><p>Divide monthly fixed costs by the amount left from each subscription after per-subscriber costs. Round up to a whole subscriber. Example: $1,200 ÷ ($29 − $4) = <strong>48 subscribers</strong>. Include payment fees and support costs in your inputs.</p><h2>Frequently asked questions</h2><h3>What if my subscription price is lower than my cost per subscriber?</h3><p>You cannot cover fixed costs if each subscription brings in less than or exactly its per-subscriber cost. Raise the price or reduce per-subscriber costs before estimating break-even subscribers.</p><h3>Is this financial advice?</h3><p>No. These are simplified estimates to support planning. Review all relevant costs and taxes before making business decisions.</p><h2>Related calculators</h2><p>Compare subscriber break-even with a monthly profit target or estimate how many product sales cover fixed costs.</p><p class="related"><a href="../#quick-calculators">Monthly profit target calculator</a><a href="../break-even-calculator/">Business break-even calculator</a><a href="../#all-tools">Browse all calculators</a></p></main><footer>SoloProfit · Free business tools</footer><script>"use strict";const form=document.getElementById("calculator"),answer=document.getElementById("answer");function calc(){
+ for(const el of form.elements){if(el.name)el.removeAttribute("aria-invalid")}
  const v={};
  for(const el of form.elements){
   if(!el.name)continue;
   const raw=el.value.trim(),n=Number(raw);
   if(raw===""||!Number.isFinite(n)||n<0||(el.validity&&!el.validity.valid)){
    const labels={price:"subscription price",variable:"cost per subscriber",fixed:"monthly fixed costs"};
-   answer.textContent="Enter a valid non-negative number for "+labels[el.name]+".";return;
+   el.setAttribute("aria-invalid","true");answer.textContent="Enter a valid non-negative number for "+labels[el.name]+".";return;
   }
   v[el.name]=n;
  }
- if(v.price<=v.variable){answer.textContent="Subscription price must be higher than cost per subscriber.";return}
+ if(v.price<=v.variable){form.elements.namedItem("price").setAttribute("aria-invalid","true");form.elements.namedItem("variable").setAttribute("aria-invalid","true");answer.textContent="Subscription price must be higher than cost per subscriber.";return}
  const subscribers=Math.ceil(v.fixed/(v.price-v.variable));
  if(!Number.isSafeInteger(subscribers)||subscribers<0){answer.textContent="Numbers are too large. Use smaller amounts.";return}
  answer.textContent=subscribers.toLocaleString("en-US")+" subscribers to break even";
