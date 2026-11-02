@@ -124,3 +124,20 @@ footer a{color:var(--blue)}
 @media (hover:none){
   .tool-card:hover{transform:none}
 }
+
+/* Accessible feedback for invalid quick-calculator inputs, without layout shifts. */
+input[aria-invalid="true"]{border-color:#b33a2d;box-shadow:inset 0 0 0 1px #b33a2d}
+input[aria-invalid="true"]:focus-visible{outline-color:#b33a2d}
+
+/* Secondary-page related links need the same comfortable touch targets as navigation. */
+.inner-page .related a{display:inline-flex;align-items:center;min-height:44px;max-width:100%;overflow-wrap:anywhere}
+.inner-page .breadcrumb a{display:inline-flex;align-items:center;min-height:44px}
+.inner-page .related a:focus-visible,.inner-page .breadcrumb a:focus-visible{border-radius:4px}
+
+/* Keep narrow-screen controls readable with enlarged text and long translations. */
+@media(max-width:620px){
+  .site-links{min-width:0}
+  .site-links a{min-width:0;overflow-wrap:anywhere}
+  .calc-tabs button{min-width:0;overflow-wrap:anywhere}
+  .actions .action-button{min-width:0}
+}
