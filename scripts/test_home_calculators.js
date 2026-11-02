@@ -63,6 +63,6 @@ select("freelance");
 assert.equal(nodes.copy.disabled,false);
 assert.equal(typeof nodes.copy.listeners.click,"function");
 nodes.copy.listeners.click();
-assert.match(nodes.copyStatus.textContent,/Clipboard unavailable/);
+assert.equal(nodes.copyStatus.textContent,"Copy unavailable. Select the result to copy it.");
 
 console.log("PASS: homepage's four existing calculator formulas, error states and currency formatting");
