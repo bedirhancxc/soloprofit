@@ -4,18 +4,18 @@
 <a class="brand" href="../" aria-label="SoloProfit home"><span class="brand-mark" aria-hidden="true">S</span>SoloProfit</a>
 <nav class="site-links" aria-label="Primary"><a href="../#quick-calculators">Quick tools</a><a href="../#all-tools">All calculators</a><a href="../#how-it-works">How it works</a></nav>
 </div>
-</header><main id="main-content"><p class="breadcrumb"><a href="../#all-tools">← All calculators</a></p><h1>Subscription Break-even Calculator</h1><p>Calculate how many paying subscribers you need to cover fixed and per-customer costs.</p><section class="card"><form id="calculator"><label>Monthly price per customer ($ USD)<input type="number" name="price" min="0" step="any" value="29" required></label><label>Monthly cost per customer ($ USD)<input type="number" name="variable" min="0" step="any" value="4" required></label><label>Monthly fixed expenses ($ USD)<input type="number" name="fixed" min="0" step="any" value="1200" required></label></form><output id="answer" aria-live="polite" aria-atomic="true"></output></section><h2>How to calculate</h2><p>Break-even subscribers = fixed monthly costs ÷ (monthly subscription price − variable cost per customer), rounded up. Include fees and support costs in your estimates.</p><h2>Frequently asked questions</h2><h3>Are the calculations free?</h3><p>Yes. There is no registration, payment, or data upload. Calculations run in your browser.</p><h3>Is this financial advice?</h3><p>No. These are simplified estimates to support planning. Review all relevant costs and taxes before making business decisions.</p><p><a href="../">Explore more free business calculators</a></p></main><footer>SoloProfit · Free business tools</footer><script>"use strict";const form=document.getElementById("calculator"),answer=document.getElementById("answer");function calc(){
+</header><main id="main-content"><p class="breadcrumb"><a href="../#all-tools">← All calculators</a></p><h1>Subscription Break-even Calculator</h1><p>Find how many paying subscribers cover your monthly costs. Results update as you type.</p><section class="card"><form id="calculator"><label>Subscription price per month ($)<input type="number" name="price" min="0" step="any" value="29" required></label><label>Cost per subscriber per month ($)<input type="number" name="variable" min="0" step="any" value="4" required></label><label>Monthly fixed costs ($)<input type="number" name="fixed" min="0" step="any" value="1200" required></label></form><output id="answer" aria-live="polite" aria-atomic="true"></output></section><h2>How to calculate</h2><p>Divide monthly fixed costs by the amount left from each subscription after per-subscriber costs. Round up to a whole subscriber. Example: $1,200 ÷ ($29 − $4) = <strong>48 subscribers</strong>. Include payment fees and support costs in your inputs.</p><h2>Frequently asked questions</h2><h3>Are the calculations free?</h3><p>Yes. There is no registration, payment, or data upload. Calculations run in your browser.</p><h3>Is this financial advice?</h3><p>No. These are simplified estimates to support planning. Review all relevant costs and taxes before making business decisions.</p><p><a href="../">Explore more free business calculators</a></p></main><footer>SoloProfit · Free business tools</footer><script>"use strict";const form=document.getElementById("calculator"),answer=document.getElementById("answer");function calc(){
  const v={};
  for(const el of form.elements){
   if(!el.name)continue;
   const raw=el.value.trim(),n=Number(raw);
   if(raw===""||!Number.isFinite(n)||n<0||(el.validity&&!el.validity.valid)){
-   answer.textContent="Enter valid non-negative prices and costs.";return;
+   answer.textContent="Enter zero or more for every price and cost.";return;
   }
   v[el.name]=n;
  }
- if(v.price<=v.variable){answer.textContent="Monthly subscription price must exceed the cost per customer.";return}
+ if(v.price<=v.variable){answer.textContent="Subscription price must be higher than cost per subscriber.";return}
  const subscribers=Math.ceil(v.fixed/(v.price-v.variable));
- if(!Number.isSafeInteger(subscribers)||subscribers<0){answer.textContent="Values are too large. Try smaller numbers.";return}
+ if(!Number.isSafeInteger(subscribers)||subscribers<0){answer.textContent="Numbers are too large. Use smaller amounts.";return}
  answer.textContent=subscribers.toLocaleString("en-US")+" subscribers to break even";
 }form.addEventListener("input",calc);form.addEventListener("submit",e=>e.preventDefault());calc();</script></body></html>
