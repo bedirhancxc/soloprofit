@@ -206,3 +206,6 @@ input[aria-invalid="true"]:focus-visible{outline-color:#b33a2d}
 }
 /* Keep keyboard navigation usable when tab text wraps at increased zoom. */
 .calc-tabs button{min-height:44px}
+
+/* Keep in-page navigation headings readable instead of flush against the viewport edge. */
+#quick-calculators,#all-tools,#how-it-works{scroll-margin-top:20px}
