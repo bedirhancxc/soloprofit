@@ -198,3 +198,11 @@ input[aria-invalid="true"]:focus-visible{outline-color:#b33a2d}
   input,.action-button,.calc-tabs button,.tool-card{border-width:2px}
   .calc-tabs button[aria-pressed=true]{border-color:var(--blue-dark)}
 }
+
+/* Tablet calculator tabs: long labels must not widen the two-column grid. */
+@media (min-width:621px) and (max-width:900px){
+  .calc-tabs button{min-width:0;overflow-wrap:anywhere}
+  .calc-tabs button small{overflow-wrap:anywhere}
+}
+/* Keep keyboard navigation usable when tab text wraps at increased zoom. */
+.calc-tabs button{min-height:44px}
