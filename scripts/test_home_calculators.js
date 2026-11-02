@@ -23,7 +23,7 @@ const doc = {
   getElementById(id){const el=nodes[id]||inputs[id];assert.ok(el,"Unknown element: "+id);return el;},
   createElement(tag){
     if(tag==="label")return {textContent:"",append(input){this.input=input}};
-    if(tag==="input")return {...node(),id:"",value:"",validity:{valid:true}};
+    if(tag==="input"){const input={...node(),id:"",validity:{valid:true}};let stored="";Object.defineProperty(input,"value",{get(){return stored},set(v){stored=String(v)}});return input;}
     throw Error("Unexpected element: "+tag);
   }
 };
