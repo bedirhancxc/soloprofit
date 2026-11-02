@@ -20,8 +20,8 @@ for (const url of urls) {
   assert.match(html, /id="main-content"/, "Missing main anchor: " + file);
   assert.match(html, /class="site-header"/, "Missing navigation: " + file);
   assert.match(html, /href="(?:\.\.\/)?assets\/site\.css"/, "Missing shared responsive stylesheet: " + file);
-  assert.match(html, /<meta\\s+name="viewport"\\s+content="width=device-width,\\s*initial-scale=1"\\s*\\/?\\s*>/, "Missing mobile viewport: " + file);
-  const stylesheet = html.match(/<link\\s+rel="stylesheet"\\s+href="([^"]+)"/);
+  assert.match(html, /<meta\s+name="viewport"\s+content="width=device-width,\s*initial-scale=1"\s*\/?\s*>/, "Missing mobile viewport: " + file);
+  const stylesheet = html.match(/<link\s+rel="stylesheet"\s+href="([^"]+)"/);
   assert.ok(stylesheet, "Missing stylesheet link: " + file);
   assert.ok(fs.existsSync(path.resolve(path.dirname(file), stylesheet[1])),
     "Stylesheet target does not exist: " + stylesheet[1] + " in " + file);
@@ -46,7 +46,7 @@ console.log("PASS: all " + urls.length + " pages have valid inline JavaScript an
 const css = fs.readFileSync("assets/site.css", "utf8");
 
 // Catch unclosed or extra CSS blocks; regex checks alone can miss a broken @media rule.
-const stripped = css.replace(/\\/\\*[\\s\\S]*?\\*\\//g, "");
+const stripped = css.replace(/\/\*[\s\S]*?\*\//g, "");
 let depth = 0;
 for (const character of stripped) {
   if (character === "{") depth++;
