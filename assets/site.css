@@ -104,3 +104,23 @@ footer a{color:var(--blue)}
 @media(max-width:620px){.site-topbar{flex-wrap:wrap;gap:5px;min-height:0;padding:14px 0 8px}.site-links{width:100%;justify-content:flex-start;gap:4px;margin:2px -7px 0}.site-links a{padding:8px 10px;min-height:44px}.main-shell,main{padding:24px 16px 48px}.hero{padding:8px 0 20px}.calculator-layout{display:block}.calc-tabs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;margin-bottom:14px}.calc-tabs button{font-size:.9rem;padding:12px}.calc-tabs button small{font-size:.73rem}.tool-grid{grid-template-columns:1fr}.tool-card{min-height:0;padding:18px;gap:6px}.steps{grid-template-columns:1fr;gap:4px}.step{padding:9px 0}.inner-page .card form{grid-template-columns:1fr}.inner-page article>label{display:block;width:100%;margin:0 0 14px}.calculator-card,.panel,.card,article{padding:19px}.result-box{padding:15px}}
 @media(max-width:370px){.brand{font-size:1.1rem}.site-links a{font-size:.83rem}.calc-tabs button{padding:11px 9px;font-size:.85rem}.actions .action-button{flex:1}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.tool-card{transition:none}.tool-card:hover{transform:none}}
+
+/* UX: prevent cramped calculator columns on small tablets and narrow laptops. */
+@media (min-width:621px) and (max-width:900px){
+  .calculator-layout{grid-template-columns:1fr}
+  .calc-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .fields{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+/* Keep navigation and action labels accessible at 320px without horizontal scrolling. */
+@media (max-width:370px){
+  .site-links{margin-left:0;margin-right:0}
+  .site-links a{padding-inline:7px;white-space:normal;text-align:center}
+  .actions .action-button{min-width:0;overflow-wrap:anywhere}
+}
+/* Allow keyboard users to identify links and buttons clearly even without hover. */
+.calc-tabs button:focus-visible,.action-button:focus-visible,.tool-card:focus-visible{
+  outline:3px solid #69a5f5;outline-offset:3px;
+}
+@media (hover:none){
+  .tool-card:hover{transform:none}
+}
