@@ -53,6 +53,8 @@ const subscription = calculator("subscription-break-even/index.html", {
   price: 29, variable: 4, fixed: 1200
 });
 assert.equal(subscription.answer.textContent, "48 subscribers to break even");
+assert.match(subscription.set("fixed", ""), /monthly fixed costs/i);
+subscription.set("fixed", 1200);
 assert.match(subscription.set("price", 4), /(?:must exceed|must be higher than)/i);
 subscription.set("price", 29);
 assert.equal(subscription.set("fixed", 0), "0 subscribers to break even");
