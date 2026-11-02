@@ -88,25 +88,31 @@ function render(){const m=models[active];$("copyStatus").textContent="";$("headi
 function compute(){
   const m=models[active],v={};
   last="";
+  $("copyStatus").textContent="";
   $("copy").disabled=true;$("csv").disabled=true;$("resultBox").dataset.invalid="false";
+  for(const [key] of m.fields){$(key).removeAttribute("aria-invalid")}
   for(const [key] of m.fields){
     const input=$(key),raw=input.value.trim();
     v[key]=Number(raw);
-    if(!raw||!Number.isFinite(v[key])||v[key]<0){
-      $("result").textContent="Enter valid non-negative numbers in every field.";
+    if(!raw||!Number.isFinite(v[key])||v[key]<0||(input.validity&&!input.validity.valid)){
+      input.setAttribute("aria-invalid","true");
+      $("result").textContent="Enter a valid, non-negative number in every field.";
       $("resultBox").dataset.invalid="true";return;
     }
   }
-  let valid=true;
-  if(active==="freelance")valid=v.hours>0&&v.weeks>0;
-  if(active==="project")valid=v.margin<100;
-  if(active==="target")valid=v.price>v.variable;
-  if(!valid){$("result").textContent="Please check your values: the divisor must be greater than zero."; $("resultBox").dataset.invalid="true";return}
+  let problem="";
+  if(active==="freelance"&&(v.hours<=0||v.weeks<=0))problem="Billable hours and weeks must be greater than zero.";
+  if(active==="project"&&v.margin>=100)problem="Target profit margin must be below 100%.";
+  if(active==="subscription"&&!Number.isSafeInteger(v.customers))problem="Paying subscribers must be a whole number.";
+  if(active==="target"&&v.price<=v.variable)problem="Monthly price must exceed the variable cost per customer.";
+  if(problem){$("result").textContent=problem;$("resultBox").dataset.invalid="true";return}
   const value=m.calc(v);
   if(!Number.isFinite(value)||(active==="target"&&!Number.isSafeInteger(value))){
-    $("result").textContent="Numbers are too large. Try smaller values."; $("resultBox").dataset.invalid="true";return;
+    $("result").textContent="Numbers are too large. Try smaller values.";
+    $("resultBox").dataset.invalid="true";return;
   }
-  last=(active==="target"?"":"$")+money(value)+m.unit;
+  last=active==="target" ? value.toLocaleString("en-US")+m.unit :
+    new Intl.NumberFormat("en-US",{style:"currency",currency:"USD",maximumFractionDigits:2}).format(value)+m.unit;
   $("result").textContent=last;
   $("copy").disabled=false;$("csv").disabled=false;
 }
