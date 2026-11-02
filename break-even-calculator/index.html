@@ -19,45 +19,45 @@
 </header>
 <main id="main-content"><p class="breadcrumb"><a href="../#all-tools">← All calculators</a></p>
 <h1>Break-Even Point Calculator</h1>
-<p>Find the number of products or services you need to sell to cover your monthly fixed costs, plus the revenue required and your estimated profit at your expected sales volume.</p>
+<p>See how many units you need to sell to cover monthly costs. Check the sales revenue and profit at your expected volume.</p>
 <section class="card" aria-labelledby="calculator-title">
-<h2 id="calculator-title" style="margin-top:0">Calculate your break-even point</h2>
+<h2 id="calculator-title" style="margin-top:0">Calculate break-even sales</h2>
 <form id="calculator" novalidate>
 <div class="fields">
-<label for="fixed">Monthly fixed costs ($)<input id="fixed" type="number" min="0" step="any" value="3000" inputmode="decimal" required><small>Rent, subscriptions, salaries and other fixed costs</small></label>
-<label for="price">Selling price per unit ($)<input id="price" type="number" min="0" step="any" value="50" inputmode="decimal" required><small>Revenue received for each product or service</small></label>
-<label for="variable">Variable cost per unit ($)<input id="variable" type="number" min="0" step="any" value="20" inputmode="decimal" required><small>Production, packaging, delivery and transaction fees</small></label>
-<label for="quantity">Expected monthly units sold<input id="quantity" type="number" min="0" step="1" value="150" inputmode="numeric" required><small>Your estimated sales volume for the month</small></label>
+<label for="fixed">Monthly fixed costs ($)<input id="fixed" type="number" min="0" step="any" value="3000" inputmode="decimal" required><small>For example: rent, software and salaries</small></label>
+<label for="price">Selling price per unit ($)<input id="price" type="number" min="0" step="any" value="50" inputmode="decimal" required><small>What you charge for one sale</small></label>
+<label for="variable">Variable cost per unit ($)<input id="variable" type="number" min="0" step="any" value="20" inputmode="decimal" required><small>For example: materials, delivery and fees</small></label>
+<label for="quantity">Expected monthly units sold<input id="quantity" type="number" min="0" step="1" value="150" inputmode="numeric" required><small>How many units you expect to sell</small></label>
 </div>
 </form>
 <div class="results" role="status" aria-live="polite" aria-atomic="true">
 <output id="answer">Enter values to see your result.</output>
 <div class="metrics" id="metrics" hidden>
-<div class="metric"><span>Break-even sales revenue</span><strong id="revenue"></strong></div>
-<div class="metric"><span>Contribution margin per unit</span><strong id="contribution"></strong></div>
-<div class="metric"><span>Profit at expected sales volume</span><strong id="profit"></strong></div>
+<div class="metric"><span>Sales needed to break even</span><strong id="revenue"></strong></div>
+<div class="metric"><span>Amount left per unit after variable costs</span><strong id="contribution"></strong></div>
+<div class="metric"><span>Estimated monthly profit</span><strong id="profit"></strong></div>
 </div>
 </div>
-<p class="notice">Amounts are in USD. This simplified operating-profit model excludes tax and any expenses you do not enter. Calculations stay in your browser.</p>
+<p class="notice">All amounts are in USD. Results exclude taxes and costs you leave out. Your inputs stay in your browser.</p>
 </section>
 <h2>How to calculate the break-even point</h2>
-<p><strong>Break-even units = fixed costs ÷ (selling price per unit − variable cost per unit).</strong> Round the result up to the next whole unit because you cannot normally sell part of a physical product. The difference between price and variable cost is the <em>contribution margin per unit</em>.</p>
-<p><strong>Break-even revenue = break-even units × selling price.</strong> This uses the rounded whole-unit threshold rather than a fractional theoretical sales level. Estimated operating profit = units sold × contribution margin per unit − fixed costs.</p>
+<p><strong>Break-even units = fixed costs ÷ (selling price per unit − variable cost per unit).</strong> Round up to a whole unit. The amount left after each unit's variable cost helps pay fixed costs.</p>
+<p><strong>Break-even revenue = break-even units × selling price.</strong> Revenue uses the rounded whole-unit total. Estimated profit = units sold × (price − variable cost) − fixed costs.</p>
 <div class="example">
 <h3>Break-even example</h3>
-<p>Imagine a shop pays $3,000 in fixed monthly costs. Each item sells for $50 and costs $20 to produce and fulfill. Each sale contributes $30 toward fixed costs. It takes <strong>100 units</strong> to break even, equivalent to <strong>$5,000 in sales revenue</strong>. If the shop sells 150 units, estimated operating profit is <strong>$1,500</strong>.</p>
+<p>A shop has $3,000 in monthly fixed costs. It sells items for $50 each, with $20 in variable costs. Each sale contributes $30. The shop needs <strong>100 sales</strong> ($5,000 revenue) to break even. At 150 sales, estimated profit is <strong>$1,500</strong>.</p>
 </div>
 <h2>Frequently asked questions</h2>
 <h3>What if my variable cost is higher than my selling price?</h3>
-<p>Each extra sale increases your loss, so you cannot cover positive fixed costs with volume alone. Raise your price, reduce per-unit costs or change the business model.</p>
+<p>Each sale loses money before fixed costs. Raise your price or lower the cost per unit.</p>
 <h3>What costs belong in fixed costs?</h3>
-<p>Include expenses that do not usually change with each additional sale during the period, such as rent, monthly software subscriptions and certain salaries. Treat payment fees or materials tied to each order as variable costs.</p>
+<p>Include rent, software subscriptions and salaries that stay steady. Put materials and per-sale fees under variable costs.</p>
 <h3>Does breaking even mean I have earned a profit?</h3>
-<p>Not necessarily. Breaking even means your modeled operating profit is zero or slightly above zero after rounding up whole units. Taxes, refunds and other unmodeled costs can still create a loss.</p>
+<p>No. Break-even means your entered costs are covered. Taxes, refunds and missing costs can still lead to a loss.</p>
 <h3>Can I use this calculator for a service business?</h3>
-<p>Yes. Treat one billable project, appointment or service package as a unit, using its price and direct delivery cost.</p>
+<p>Yes. Use one project or appointment as a unit, with its price and direct cost.</p>
 <h2>Related calculators</h2>
-<p class="related"><a href="../profit-margin/">Profit Margin Calculator</a><a href="../markup-calculator/">Markup Calculator</a><a href="../subscription-break-even/">Subscription Break-even for SaaS</a><a href="../freelance-hourly-rate/">Freelance Hourly Rate</a></p>
+<p class="related"><a href="../profit-margin/">Profit Margin Calculator</a><a href="../markup-calculator/">Markup Calculator</a><a href="../subscription-break-even/">Subscription break-even calculator</a><a href="../freelance-hourly-rate/">Freelance hourly rate calculator</a></p>
 </main>
 <footer>SoloProfit · Free business calculators · No signup</footer>
 <script>
