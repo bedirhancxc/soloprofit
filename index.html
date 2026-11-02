@@ -1,13 +1,77 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SoloProfit — Free Business Calculators</title><link rel="canonical" href="https://bedirhancxc.github.io/soloprofit/"><meta name="description" content="Free calculators for freelance rates, project pricing, subscription revenue and profit targets. Private, fast, no signup.">
-<style>:root{font-family:system-ui,Arial;background:#f4f7fb;color:#18233b}*{box-sizing:border-box}body{margin:0}header{background:#10213e;color:white;padding:26px max(20px,calc((100vw - 1020px)/2))}header h1{margin:0;font-size:30px}header p{color:#d2e0f6}main{max-width:1020px;margin:auto;padding:24px 18px}nav{display:flex;flex-wrap:wrap;gap:9px;margin:20px 0}button{cursor:pointer;border:0;border-radius:9px;padding:12px 16px;font-weight:650}nav button{background:#e3eafa;color:#263958}nav button[aria-selected=true],.primary{background:#1764dc;color:white}.panel{background:white;border-radius:16px;box-shadow:0 4px 20px #1c365412;padding:25px;max-width:690px}.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}label{display:block;font-size:14px;font-weight:650}input{display:block;width:100%;margin-top:7px;border:1px solid #b9c8dc;border-radius:8px;padding:12px;font-size:17px}output{display:block;background:#eaf3ff;border-radius:12px;padding:20px;margin-top:20px;font-size:28px;font-weight:750;color:#124fa7}small{color:#59677a}footer{padding:25px;text-align:center;color:#59677a}.hidden{display:none}@media(max-width:520px){header h1{font-size:25px}.panel{padding:18px}}</style></head>
-<body><header><h1>SoloProfit</h1><p>Free, practical calculators for independent businesses. No account required.</p></header>
-<main><h2>Make better business decisions</h2><p>Estimate pricing and revenue with transparent formulas. All calculations happen in your browser.</p>
-<nav id="tabs" aria-label="Calculators"><button data-tab="freelance" aria-selected="true">Freelance Rate</button><button data-tab="project">Project Quote</button><button data-tab="subscription">Subscription Revenue</button><button data-tab="target">Profit Target</button></nav>
-<section class="panel" id="panel"><h2 id="heading">Freelance Rate Calculator</h2><p id="explain"></p><div class="fields" id="fields"></div><output id="result" aria-live="polite"></output><p><button class="primary" id="copy">Copy result</button> <button id="csv">Download CSV</button></p><small id="note"></small></section>
-<section><h2>More free calculators</h2><p><a href="freelance-hourly-rate/">Freelance Hourly Rate Calculator</a> · <a href="profit-margin/">Profit Margin Calculator</a> · <a href="subscription-break-even/">Subscription Break-even Calculator</a> · <a href="markup-calculator/">Markup Calculator</a> · <a href="break-even-calculator/">Break-Even Point Calculator</a></p></section><section><h2>How it works</h2><p>Choose a calculator, enter your assumptions and see an immediate estimate. These tools are educational and do not provide tax, financial or legal advice. Currency values are USD unless otherwise indicated.</p></section></main>
-<footer>© <span id="year"></span> SoloProfit · Free business tools · Your inputs stay on your device.</footer>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SoloProfit — Free Business Calculators</title>
+<meta name="description" content="Free, easy-to-use calculators for freelance pricing, profit margins, subscriptions and business break-even points. No signup; instant results.">
+<link rel="canonical" href="https://bedirhancxc.github.io/soloprofit/">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="site-topbar">
+    <a class="brand" href="./" aria-label="SoloProfit home"><span class="brand-mark" aria-hidden="true">S</span>SoloProfit</a>
+    <nav class="site-links" aria-label="Primary"><a href="#quick-calculators" aria-current="page">Quick tools</a><a href="#all-tools">All calculators</a><a href="#how-it-works">How it works</a></nav>
+  </div>
+</header>
+<main class="main-shell">
+  <section class="hero" aria-labelledby="home-heading">
+    <div class="hero-copy">
+      <span class="eyebrow">Free business calculators</span>
+      <h1 id="home-heading">Make sense of your numbers in seconds.</h1>
+      <p class="lede">Calculate pricing, profit and break-even points without spreadsheets or signup. Choose a tool, change the example values and see the answer instantly.</p>
+      <div class="trust-row" aria-label="Benefits"><span>100% free</span><span>No account needed</span><span>Works on mobile</span><span>Private in your browser</span></div>
+    </div>
+  </section>
+  <section id="quick-calculators" aria-labelledby="quick-heading">
+    <div class="section-heading"><h2 id="quick-heading">Quick calculators</h2><p>Start with one of these common questions. Your result updates as you type.</p></div>
+    <div class="calculator-layout">
+      <nav class="calc-tabs" id="tabs" aria-label="Choose a quick calculator">
+        <button type="button" data-tab="freelance" aria-pressed="true">Freelance rate<small>What should I charge per hour?</small></button>
+        <button type="button" data-tab="project" aria-pressed="false">Project price<small>What should I quote?</small></button>
+        <button type="button" data-tab="subscription" aria-pressed="false">Subscription profit<small>What could I earn monthly?</small></button>
+        <button type="button" data-tab="target" aria-pressed="false">Profit target<small>How many customers do I need?</small></button>
+      </nav>
+      <section class="calculator-card" id="panel" aria-labelledby="heading">
+        <span class="eyebrow">Live calculator</span>
+        <h3 id="heading">Freelance Rate Calculator</h3>
+        <p id="explain" class="card-intro">Estimate a rate based on income and expenses.</p>
+        <div class="fields" id="fields"></div>
+        <div class="result-box" id="resultBox" data-invalid="false">
+          <span class="result-label">Your estimated result</span>
+          <output id="result" aria-live="polite" aria-atomic="true">Calculating…</output>
+        </div>
+        <div class="actions">
+          <button type="button" class="action-button primary" id="copy">Copy result</button>
+          <button type="button" class="action-button" id="csv">Download CSV</button>
+        </div>
+        <p class="small-note" id="copyStatus" aria-live="polite"></p>
+        <p class="form-note" id="note"></p>
+      </section>
+    </div>
+  </section>
+  <section id="all-tools" aria-labelledby="tools-heading">
+    <div class="section-heading"><h2 id="tools-heading">Explore all calculators</h2><p>Need a more specific calculation? Open one of our focused tools below.</p></div>
+    <div class="tool-grid">
+      <a class="tool-card" href="freelance-hourly-rate/"><span class="tool-card-title">Freelance hourly rate</span><span class="tool-card-desc">Find a sustainable hourly rate from your income goal, expenses and billable time.</span><span class="tool-card-arrow" aria-hidden="true">Explore →</span></a>
+      <a class="tool-card" href="profit-margin/"><span class="tool-card-title">Profit margin</span><span class="tool-card-desc">See what percentage of your revenue remains after costs.</span><span class="tool-card-arrow" aria-hidden="true">Explore →</span></a>
+      <a class="tool-card" href="subscription-break-even/"><span class="tool-card-title">Subscription break-even</span><span class="tool-card-desc">Estimate paying subscribers needed to cover monthly costs.</span><span class="tool-card-arrow" aria-hidden="true">Explore →</span></a>
+      <a class="tool-card" href="markup-calculator/"><span class="tool-card-title">Markup &amp; selling price</span><span class="tool-card-desc">Turn product costs and markup into a selling price and margin.</span><span class="tool-card-arrow" aria-hidden="true">Explore →</span></a>
+      <a class="tool-card" href="break-even-calculator/"><span class="tool-card-title">Business break-even</span><span class="tool-card-desc">Find the unit sales and revenue needed to cover fixed costs.</span><span class="tool-card-arrow" aria-hidden="true">Explore →</span></a>
+    </div>
+  </section>
+  <section id="how-it-works" aria-labelledby="how-heading">
+    <div class="section-heading"><h2 id="how-heading">How SoloProfit works</h2><p>Simple tools to help you understand your assumptions.</p></div>
+    <div class="steps">
+      <div class="step"><span class="step-number">1</span><h3>Pick a question</h3><p>Choose a quick calculator or a more detailed tool.</p></div>
+      <div class="step"><span class="step-number">2</span><h3>Enter your numbers</h3><p>Replace the sample values with your own costs, prices or goals.</p></div>
+      <div class="step"><span class="step-number">3</span><h3>Review your result</h3><p>Get instant estimates and see the assumptions behind them.</p></div>
+    </div>
+  </section>
+  <p class="info-note">All monetary examples are in USD. Calculators provide simplified estimates, not tax, legal or financial advice. Your inputs stay in your browser.</p>
+</main>
+<footer>© <span id="year"></span> SoloProfit · Free business tools · No signup required</footer>
 <script>
 "use strict";
 const models={
@@ -19,10 +83,36 @@ target:{title:"Monthly Profit Target Calculator",description:"Estimate paying cu
 let active="freelance",last="";
 const $=id=>document.getElementById(id);
 function money(n){return Number.isFinite(n)?n.toLocaleString("en-US",{maximumFractionDigits:2,minimumFractionDigits:0}):"Invalid inputs"}
-function render(){const m=models[active];$("heading").textContent=m.title;$("explain").textContent=m.description;$("note").textContent=m.note;$("fields").replaceChildren();for(const [key,label,initial] of m.fields){const wrap=document.createElement("label");wrap.textContent=label;const inp=document.createElement("input");inp.type="number";inp.step="any";inp.min="0";inp.value=initial;inp.id=key;inp.addEventListener("input",compute);wrap.append(inp);$("fields").append(wrap)}compute()}
-function compute(){const m=models[active],v={};for(const [key] of m.fields){v[key]=Number($(key).value);if(!$(key).value.trim()||!Number.isFinite(v[key])||v[key]<0){$("result").textContent="Enter valid non-negative numbers";return}}let valid=true;if(active==="freelance")valid=v.hours>0&&v.weeks>0;if(active==="project")valid=v.margin<100;if(active==="target")valid=v.price>v.variable;if(!valid){$("result").textContent="Check your inputs: denominator must be positive";return}const value=m.calc(v);last=(active==="target"?"": "$")+money(value)+m.unit;$("result").textContent=last}
-$("tabs").addEventListener("click",e=>{const b=e.target.closest("button[data-tab]");if(!b)return;active=b.dataset.tab;for(const tab of $("tabs").children)tab.setAttribute("aria-selected",String(tab===b));render()});
-$("copy").addEventListener("click",async()=>{if(last&&navigator.clipboard)try{await navigator.clipboard.writeText(last)}catch{}});
-$("csv").addEventListener("click",()=>{const m=models[active];let rows=[["Field","Value"],...m.fields.map(([key,label])=>[label,$(key).value]),["Result",last]];const csv=rows.map(r=>r.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(",")).join("\r\n");const url=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));const a=document.createElement("a");a.href=url;a.download="soloprofit-"+active+".csv";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)});
+function render(){const m=models[active];$("copyStatus").textContent="";$("heading").textContent=m.title;$("explain").textContent=m.description;$("note").textContent=m.note;$("fields").replaceChildren();for(const [key,label,initial] of m.fields){const wrap=document.createElement("label");wrap.textContent=label;const inp=document.createElement("input");inp.type="number";inp.step="any";inp.min="0";inp.inputMode="decimal";inp.value=initial;inp.id=key;inp.addEventListener("input",compute);wrap.append(inp);$("fields").append(wrap)}compute()}
+function compute(){
+  const m=models[active],v={};
+  last="";
+  $("copy").disabled=true;$("csv").disabled=true;$("resultBox").dataset.invalid="false";
+  for(const [key] of m.fields){
+    const input=$(key),raw=input.value.trim();
+    v[key]=Number(raw);
+    if(!raw||!Number.isFinite(v[key])||v[key]<0){
+      $("result").textContent="Enter valid non-negative numbers in every field.";
+      $("resultBox").dataset.invalid="true";return;
+    }
+  }
+  let valid=true;
+  if(active==="freelance")valid=v.hours>0&&v.weeks>0;
+  if(active==="project")valid=v.margin<100;
+  if(active==="target")valid=v.price>v.variable;
+  if(!valid){$("result").textContent="Please check your values: the divisor must be greater than zero."; $("resultBox").dataset.invalid="true";return}
+  const value=m.calc(v);
+  if(!Number.isFinite(value)||(active==="target"&&!Number.isSafeInteger(value))){
+    $("result").textContent="Numbers are too large. Try smaller values."; $("resultBox").dataset.invalid="true";return;
+  }
+  last=(active==="target"?"":"$")+money(value)+m.unit;
+  $("result").textContent=last;
+  $("copy").disabled=false;$("csv").disabled=false;
+}
+$("tabs").addEventListener("click",e=>{const b=e.target.closest("button[data-tab]");if(!b)return;active=b.dataset.tab;for(const tab of $("tabs").children)tab.setAttribute("aria-pressed",String(tab===b));render()});
+$("copy").addEventListener("click",async()=>{if(last&&navigator.clipboard)try{await navigator.clipboard.writeText(last);$("copyStatus").textContent="Copied to clipboard."}catch{$("copyStatus").textContent="Could not copy. Select the result text instead."}});
+$("csv").addEventListener("click",()=>{if(!last)return;const m=models[active];let rows=[["Field","Value"],...m.fields.map(([key,label])=>[label,$(key).value]),["Result",last]];const csv=rows.map(r=>r.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(",")).join("\r\n");const url=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));const a=document.createElement("a");a.href=url;a.download="soloprofit-"+active+".csv";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)});
 $("year").textContent=new Date().getFullYear();render();
-</script></body></html>
+</script>
+</body>
+</html>
