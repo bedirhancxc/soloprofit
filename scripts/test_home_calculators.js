@@ -27,7 +27,7 @@ const doc = {
     throw Error("Unexpected element: "+tag);
   }
 };
-const context = vm.createContext({document:doc,Date,Intl});
+const context = vm.createContext({document:doc,Date,Intl,navigator:{}});
 const run = text => vm.runInContext(text,context,{timeout:1000});
 run(match[1]);
 assert.equal(nodes.result.textContent,"$78.26/ hour");
