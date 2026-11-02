@@ -52,3 +52,12 @@ jobs:
           path: .
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  verify-public:
+    name: Verify public sitemap and pages after deploy
+    needs: deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch published sitemap, robots.txt and six pages
+        run: bash scripts/check_published.sh
