@@ -57,4 +57,12 @@ edit("price",29);
 assert.match(edit("fixed",""),/valid, non-negative/);
 assert.equal(nodes.copy.disabled,true);
 
+
+// A browser without Clipboard API must still explain why copying failed.
+select("freelance");
+assert.equal(nodes.copy.disabled,false);
+assert.equal(typeof events.click,"function");
+events.click();
+assert.match(nodes.copyStatus.textContent,/Clipboard unavailable/);
+
 console.log("PASS: homepage's four existing calculator formulas, error states and currency formatting");
