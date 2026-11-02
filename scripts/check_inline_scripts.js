@@ -20,6 +20,11 @@ for (const url of urls) {
   assert.match(html, /id="main-content"/, "Missing main anchor: " + file);
   assert.match(html, /class="site-header"/, "Missing navigation: " + file);
   assert.match(html, /href="(?:\.\.\/)?assets\/site\.css"/, "Missing shared responsive stylesheet: " + file);
+  assert.match(html, /<meta\\s+name="viewport"\\s+content="width=device-width,\\s*initial-scale=1"\\s*\\/?\\s*>/, "Missing mobile viewport: " + file);
+  const stylesheet = html.match(/<link\\s+rel="stylesheet"\\s+href="([^"]+)"/);
+  assert.ok(stylesheet, "Missing stylesheet link: " + file);
+  assert.ok(fs.existsSync(path.resolve(path.dirname(file), stylesheet[1])),
+    "Stylesheet target does not exist: " + stylesheet[1] + " in " + file);
   // Verify same-page and cross-page navigation fragments actually exist.
   for (const [, href] of html.matchAll(/<a\b[^>]*\bhref="([^"]+)"/g)) {
     if (!href.includes("#") || /^(?:https?:|mailto:|tel:)/i.test(href)) continue;
@@ -39,6 +44,16 @@ for (const url of urls) {
 console.log("PASS: all " + urls.length + " pages have valid inline JavaScript and responsive navigation.");
 
 const css = fs.readFileSync("assets/site.css", "utf8");
+
+// Catch unclosed or extra CSS blocks; regex checks alone can miss a broken @media rule.
+const stripped = css.replace(/\\/\\*[\\s\\S]*?\\*\\//g, "");
+let depth = 0;
+for (const character of stripped) {
+  if (character === "{") depth++;
+  if (character === "}") depth--;
+  assert.ok(depth >= 0, "Unexpected closing brace in responsive CSS");
+}
+assert.equal(depth, 0, "Unclosed block in responsive CSS");
 assert.match(css, /@media\s*\(max-width:\s*620px\)/, "Missing phone layout breakpoint");
 assert.match(css, /@media\s*\(min-width:\s*621px\)\s*and\s*\(max-width:\s*900px\)/, "Missing tablet layout breakpoint");
 assert.match(css, /\.calculator-layout\s*\{grid-template-columns:1fr\}/, "Tablet calculator layout must not be cramped");
