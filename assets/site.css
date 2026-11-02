@@ -174,3 +174,27 @@ input[aria-invalid="true"]:focus-visible{outline-color:#b33a2d}
   text-decoration:underline;
   text-underline-offset:4px;
 }
+
+/* Make selected controls and keyboard focus legible in Windows high-contrast mode. */
+@media (forced-colors:active){
+  .calc-tabs button[aria-pressed=true]{
+    border:2px solid Highlight;
+    box-shadow:none;
+    color:HighlightText;
+  }
+  .site-header a:focus-visible,
+  .calc-tabs button:focus-visible,
+  .action-button:focus-visible,
+  .tool-card:focus-visible,
+  input:focus-visible{
+    outline:3px solid Highlight;
+    outline-offset:3px;
+  }
+  input[aria-invalid="true"]{border:2px solid Mark}
+  .action-button:disabled{color:GrayText}
+}
+/* Preserve readable control boundaries when users request extra contrast. */
+@media (prefers-contrast:more){
+  input,.action-button,.calc-tabs button,.tool-card{border-width:2px}
+  .calc-tabs button[aria-pressed=true]{border-color:var(--blue-dark)}
+}
