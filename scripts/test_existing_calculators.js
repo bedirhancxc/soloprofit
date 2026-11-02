@@ -64,6 +64,14 @@ assert.match(margin.set("cost", ""), /total costs.*valid non-negative/i);
 assert.equal(margin.isInvalid("cost"),true);
 margin.set("cost", 7000);
 assert.equal(margin.isInvalid("cost"),false);
+margin.set("revenue", "1e-308");
+assert.match(margin.set("cost", "1e308"), /too large/i);
+assert.equal(margin.isInvalid("revenue"), true);
+assert.equal(margin.isInvalid("cost"), true);
+margin.set("revenue", 10000);
+margin.set("cost", 7000);
+assert.equal(margin.isInvalid("revenue"), false);
+assert.equal(margin.isInvalid("cost"), false);
 
 const subscription = calculator("subscription-break-even/index.html", {
   price: 29, variable: 4, fixed: 1200
