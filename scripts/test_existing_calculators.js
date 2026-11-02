@@ -48,6 +48,11 @@ assert.equal(freelance.isInvalid("weeks"), true);
 freelance.set("weeks", 46);
 freelance.set("income", "1e308");
 assert.match(freelance.set("expenses", "1e308"), /too large/i);
+for (const name of ["income", "expenses", "hours", "weeks"]) assert.equal(freelance.isInvalid(name), true);
+freelance.set("income", 80000);
+freelance.set("expenses", 10000);
+assert.equal(freelance.answer.textContent, "$78.26 per billable hour");
+for (const name of ["income", "expenses", "hours", "weeks"]) assert.equal(freelance.isInvalid(name), false);
 
 const margin = calculator("profit-margin/index.html", {
   revenue: 10000, cost: 7000
