@@ -161,3 +161,16 @@ input[aria-invalid="true"]:focus-visible{outline-color:#b33a2d}
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{scroll-behavior:auto!important;transition-duration:0s!important;animation-duration:0s!important}
 }
+
+/* UX: give secondary-page forms room at tablet widths instead of squeezing labels. */
+@media (min-width:621px) and (max-width:760px){
+  .inner-page .card form{grid-template-columns:minmax(0,1fr)}
+  .inner-page .card form>.fields{grid-column:1}
+}
+/* Keyboard focus must stand out against the dark navigation bar. */
+.site-header a:focus-visible{
+  outline:3px solid #fff;
+  outline-offset:3px;
+  text-decoration:underline;
+  text-underline-offset:4px;
+}
