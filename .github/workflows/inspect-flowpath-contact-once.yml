@@ -1,0 +1,34 @@
+name: Verify FlowPath public submission email (one-time)
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/inspect-flowpath-contact-once.yml'
+permissions:
+  contents: read
+jobs:
+  verify-contact:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Read public directory contact email (no submission)
+        run: |
+          python3 - <<'PY'
+          import urllib.request,re
+          url="https://www.flowpath.cloud/contact-us/"
+          req=urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0 (compatible; SoloProfitDirectorySubmission/1.0)"})
+          with urllib.request.urlopen(req,timeout=25) as response:
+              raw=response.read(120000).decode("utf-8","replace")
+          values=set(re.findall(r'data-cfemail=["\']([0-9a-fA-F]+)',raw))
+          values.update(re.findall(r'/cdn-cgi/l/email-protection#([0-9a-fA-F]+)',raw))
+          for value in values:
+              try:
+                  numbers=bytes.fromhex(value)
+                  addr=bytes(x ^ numbers[0] for x in numbers[1:]).decode("utf-8")
+                  if "@" in addr and "." in addr.split("@")[-1]:
+                      print("OFFICIAL_CONTACT_EMAIL:",addr)
+              except Exception:
+                  pass
+          if not values:
+              print("No obfuscated email found; manual inspection needed.")
+          PY
