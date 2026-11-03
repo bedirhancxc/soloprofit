@@ -1,0 +1,54 @@
+name: Inspect NoUploadTools submission safely once
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/inspect-nouploadtools-once.yml']
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Inspect current browser form and public script without submitting
+        run: |
+          python3 - <<'PY'
+          import urllib.request,urllib.parse,re
+          from html.parser import HTMLParser
+          class F(HTMLParser):
+              def __init__(self):super().__init__();self.forms=[];self.active=None;self.select=None;self.opt=None
+              def handle_starttag(self,t,attrs):
+                  a=dict(attrs)
+                  if t=="form":self.active={"action":a.get("action"),"method":a.get("method"),"fields":[],"options":[]};self.forms.append(self.active)
+                  if self.active is not None:
+                      if t in ("input","select","textarea","button"):self.active["fields"].append({k:a.get(k) for k in ("name","id","type","value","placeholder","required") if k in a and a.get("type")!="hidden" or k=="name"})
+                      if t=="select":self.select=a.get("name") or a.get("id")
+                      if t=="option" and self.select:self.opt=[a.get("value",""),""]
+              def handle_data(self,s):
+                  if self.opt is not None:self.opt[1]+=s
+              def handle_endtag(self,t):
+                  if t=="option" and self.opt is not None:self.active["options"].append([self.select]+self.opt);self.opt=None
+                  if t=="select":self.select=None
+                  if t=="form":self.active=None
+          url="https://nouploadtools.com/submit"
+          req=urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0 (compatible; SoloProfitEditorialSubmission/1.0)"})
+          with urllib.request.urlopen(req,timeout=30) as response:
+              body=response.read(500000).decode("utf-8","replace")
+              print("FORM_HTTP",response.status,"LENGTH",len(body))
+          f=F();f.feed(body)
+          print("FORMS",repr(f.forms)[:20000])
+          scripts=re.findall(r'<script[^>]*src=["\x27]([^"\x27]+)',body,re.I)
+          print("SCRIPTS",scripts[:30])
+          for t in ("submit","/api/submit","form","toolUrl","toolName","csrf","category"):
+              hits=[m.start() for m in re.finditer(re.escape(t),body,re.I)]
+              print("HTML_MATCH",t,len(hits),[body[max(0,k-100):k+250] for k in hits[:4]])
+          for src in scripts[:12]:
+              if not src.startswith("/") and not src.startswith("https://nouploadtools.com/"):continue
+              try:
+                  with urllib.request.urlopen(urllib.request.Request(urllib.parse.urljoin(url,src),headers={"User-Agent":"Mozilla/5.0"}),timeout=20) as response:
+                      js=response.read(250000).decode("utf-8","replace")
+                  for needle in ("/api/submit","/api/tools","fetch(","submitTool"):
+                      hits=[m.start() for m in re.finditer(re.escape(needle),js)]
+                      if hits:print("JS_MATCH",src,needle,len(hits),[js[max(0,k-100):k+300] for k in hits[:3]])
+              except Exception as e:print("SCRIPT_READ_ERROR",src,type(e).__name__,str(e)[:100])
+          PY
