@@ -35,6 +35,27 @@ jobs:
           with urllib.request.urlopen(urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0 (SoloProfit free submission inspector)"}),timeout=25) as r:
               source=r.read(280000).decode("utf-8","replace")
               print("HTTP",r.status,"URL",r.url,"SIZE",len(source))
+          for candidate in ("https://linkrena.com/submit","https://linkrena.com/submit?url=https%3A%2F%2Fbedirhancxc.github.io%2Fsoloprofit%2F"):
+              try:
+                  with urllib.request.urlopen(urllib.request.Request(candidate,headers={"User-Agent":"Mozilla/5.0"}),timeout=25) as candidate_response:
+                      page=candidate_response.read(230000).decode("utf-8","replace")
+                      print("SUBMIT_PAGE",candidate_response.status,candidate_response.url,"SIZE",len(page))
+                  sp=Parser();sp.feed(page)
+                  print("SUBMIT_FORMS",sp.forms[:5])
+                  print("SUBMIT_SCRIPTS",sp.scripts[:22])
+                  for q in ("turnstile","recaptcha","hcaptcha","security verification","/api/submit","/api/v1/","sign in","Sign in to","submit for free"):
+                      hits=[m.start() for m in re.finditer(re.escape(q),page,re.I)]
+                      print("SUBMIT_HTML_MATCH",q,"COUNT",len(hits),"SAMPLES",[page[max(0,x-80):x+230] for x in hits[:3]])
+                  for src in sp.scripts:
+                      if "/app/submit/" not in src and "/submit/" not in src:continue
+                      with urllib.request.urlopen(urllib.request.Request(urllib.parse.urljoin(candidate,src),headers={"User-Agent":"Mozilla/5.0"}),timeout=25) as r2:
+                          js=r2.read(500000).decode("utf-8","replace")
+                      print("SUBMIT_JS_FILE",src[:200],"SIZE",len(js))
+                      for q in ("/api/","fetch(","turnstile","captcha","url","submit"):
+                          hits=[m.start() for m in re.finditer(re.escape(q),js,re.I)]
+                          print("SUBMIT_JS_MATCH",q,"COUNT",len(hits),"SAMPLES",[js[max(0,x-100):x+230] for x in hits[:5]])
+              except Exception as error:
+                  print("SUBMIT_ERROR",type(error).__name__,str(error)[:140])
           spec_url="https://linkrena.com/openapi.json"
           with urllib.request.urlopen(urllib.request.Request(spec_url,headers={"User-Agent":"SoloProfit-OpenAPI-Inspector/1.0","Accept":"application/json"}),timeout=25) as api_resp:
               import json
