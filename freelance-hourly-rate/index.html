@@ -11,7 +11,7 @@
   if(!el.name)continue;
   const raw=el.value.trim(),n=Number(raw);
   if(raw===""||!Number.isFinite(n)||n<0||(el.validity&&!el.validity.valid)){
-   el.setAttribute("aria-invalid","true");answer.textContent="Enter a valid non-negative number for "+el.closest("label").firstChild.textContent.trim()+".";return;
+   el.setAttribute("aria-invalid","true");answer.textContent=el.name==="weeks"?"Enter a number of billed weeks from 1 to 52.":el.name==="hours"?"Enter billable hours greater than zero.":"Enter a valid amount of zero or more for "+el.closest("label").firstChild.textContent.trim()+".";return;
   }
   v[el.name]=n;
  }
