@@ -1,0 +1,16 @@
+name: Verify SoloProfit live directory listing (read only)
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/verify-launchpad-once.yml'
+permissions:
+  contents: read
+jobs:
+  read-listing:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify public SoloProfit listing on TechTools
+        run: python3 -u scripts/check_launchpad_listing.py
