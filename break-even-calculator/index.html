@@ -24,10 +24,10 @@
 <h2 id="calculator-title" style="margin-top:0">Calculate break-even sales</h2>
 <form id="calculator" novalidate>
 <div class="fields">
-<label for="fixed">Monthly fixed costs ($)<input id="fixed" type="number" min="0" step="any" value="3000" inputmode="decimal" required><small>For example: rent, software and salaries</small></label>
-<label for="price">Selling price per unit ($)<input id="price" type="number" min="0" step="any" value="50" inputmode="decimal" required><small>Price charged for each item or service</small></label>
-<label for="variable">Variable cost per unit ($)<input id="variable" type="number" min="0" step="any" value="20" inputmode="decimal" required><small>For example: materials, delivery and fees</small></label>
-<label for="quantity">Expected monthly units sold<input id="quantity" type="number" min="0" step="1" value="150" inputmode="numeric" required><small>Change this to see profit at your expected sales</small></label>
+<label for="fixed">Monthly fixed costs ($)<input id="fixed" aria-describedby="answer" type="number" min="0" step="any" value="3000" inputmode="decimal" required><small>For example: rent, software and salaries</small></label>
+<label for="price">Selling price per unit ($)<input id="price" aria-describedby="answer" type="number" min="0" step="any" value="50" inputmode="decimal" required><small>Price charged for each item or service</small></label>
+<label for="variable">Variable cost per unit ($)<input id="variable" aria-describedby="answer" type="number" min="0" step="any" value="20" inputmode="decimal" required><small>For example: materials, delivery and fees</small></label>
+<label for="quantity">Expected monthly units sold<input id="quantity" aria-describedby="answer" type="number" min="0" step="1" value="150" inputmode="numeric" required><small>Change this to see profit at your expected sales</small></label>
 </div>
 </form>
 <div class="results" role="status" aria-live="polite" aria-atomic="true">
