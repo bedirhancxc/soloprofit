@@ -97,7 +97,7 @@ footer a{color:var(--blue)}
 .inner-page .metric{background:white;padding:13px;border-radius:10px}
 .inner-page .metric span{color:var(--muted);font-size:.86rem;display:block}
 .inner-page .metric strong{font-size:1.16rem}
-.inner-page .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:14px}
+.inner-page .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:12px;margin-top:14px}
 .inner-page .related{display:flex;flex-wrap:wrap;gap:12px 20px}
 .inner-page .example{border-left:4px solid var(--blue);background:#eef4fd;padding:14px 20px;border-radius:0 12px 12px 0}
 @media(max-width:800px){.tool-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.calculator-layout{grid-template-columns:minmax(190px,225px) minmax(0,1fr)}.fields{grid-template-columns:1fr}}
