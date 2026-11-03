@@ -76,13 +76,18 @@ for (const url of urls) {
   const file = path.join(suffix, "index.html");
   const html = fs.readFileSync(file, "utf8");
   const analyticsPath = suffix ? "../assets/analytics.js" : "assets/analytics.js";
+  const configPath = suffix ? "../assets/analytics-config.js" : "assets/analytics-config.js";
+  assert.ok(html.includes('src="' + configPath + '"'), "Generated analytics config reference missing: " + file);
   assert.ok(html.includes('src="' + analyticsPath + '"'), "Analytics loader missing: " + file);
+  assert.ok(html.indexOf('src="' + configPath + '"') < html.indexOf('src="' + analyticsPath + '"'), "Analytics config must load before SDK: " + file);
   assert.ok(html.includes("cookieless page-view analytics"), "Privacy notice missing: " + file);
   assert.doesNotMatch(html, /id="visitor-count"|id="analytics-dashboard"/, "No public analytics counter: " + file);
 }
-if (analytics.includes('const PROJECT_TOKEN = "";')) {
+{
   const sandbox = { window: {}, document: {} };
   new vm.Script(analytics).runInNewContext(sandbox);
-  assert.equal(sandbox.window.posthog, undefined, "Inactive analytics must not load third-party code");
+  assert.equal(sandbox.window.posthog, undefined, "Missing config must not contact third parties");
+  assert.ok(analytics.includes("window.SOLOPROFIT_ANALYTICS_CONFIG"), "Project token must be read from generated runtime config");
+  assert.doesNotMatch(analytics, /const PROJECT_TOKEN\\s*=\\s*"phc_/, "Do not commit real project tokens in source");
 }
 console.log("PASS: six pages wired to disabled-by-default private analytics without public counters");
