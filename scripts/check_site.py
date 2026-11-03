@@ -17,9 +17,15 @@ class Parser(HTMLParser):
         self.canonicals = []
         self.in_title = False
         self.title_text = ""
+        self.lang = None
+        self.descriptions = []
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
+        if tag == "html":
+            self.lang = attrs.get("lang")
+        if tag == "meta" and attrs.get("name", "").lower() == "description":
+            self.descriptions.append(attrs.get("content", "").strip())
         if attrs.get("id"):
             self.ids.add(attrs["id"])
         if tag in ("h1", "h2", "h3", "h4", "h5", "h6"):
@@ -51,6 +57,9 @@ urls = [n.text for n in root.findall(".//s:loc", ns)]
 assert urls and len(urls) == len(set(urls)), "Missing or duplicate sitemap URLs"
 assert all(u and u.startswith(BASE) for u in urls), "Invalid sitemap URLs"
 pages = []
+seen_titles = set()
+seen_descriptions = set()
+home_links = set()
 for url in urls:
     path = unquote(urlparse(url).path)
     relative = path.removeprefix("/soloprofit/").strip("/")
@@ -64,9 +73,17 @@ for url in urls:
     assert parser.heading_levels[0] == 1, f"First heading must be H1: {file}"
     assert all(b <= a + 1 for a, b in zip(parser.heading_levels, parser.heading_levels[1:])), f"Skipped heading level: {file}"
     assert parser.title_text.strip(), f"Empty page title: {file}"
+    assert parser.lang == "en", f"Page language missing or wrong: {file}"
+    assert len(parser.descriptions) == 1 and parser.descriptions[0], f"Expected one nonempty meta description: {file}"
+    assert parser.title_text.strip() not in seen_titles, f"Duplicate title: {file}"
+    assert parser.descriptions[0] not in seen_descriptions, f"Duplicate meta description: {file}"
+    seen_titles.add(parser.title_text.strip())
+    seen_descriptions.add(parser.descriptions[0])
     assert not parser.robots_noindex, f"Indexed page marked noindex: {file}"
     assert parser.canonicals == [url], f"Missing or duplicate canonical: {file}"
     assert parser.links, f"No navigation links: {file}"
+    if url == BASE:
+        home_links = {urljoin(url, link).split("#", 1)[0] for link in parser.links}
     for link in parser.links:
         if link.startswith(("mailto:", "tel:", "javascript:")):
             continue
@@ -92,7 +109,8 @@ for url in urls:
     assert "aria-live" in html, f"Missing accessible result: {file}"
     assert f'href="{url}"' in html, f"Canonical URL missing or mismatched: {file}"
 assert set(urls) == {BASE + ("" if p == ROOT / "index.html" else p.parent.as_posix().strip("/") + "/") for p in pages}, "Sitemap mismatch"
+assert set(urls).issubset(home_links), "Homepage must link to every indexed calculator page"
 assert (ROOT / "robots.txt").is_file(), "Missing robots.txt"
 robots = (ROOT / "robots.txt").read_text(encoding="utf-8")
 assert f"Sitemap: {BASE}sitemap.xml" in robots, "robots.txt sitemap mismatch"
-print(f"PASS: {len(pages)} indexed pages have valid metadata, calculators and canonical URLs")
+print(f"PASS: {len(pages)} pages have unique titles, descriptions, valid language, working links and canonicals")
