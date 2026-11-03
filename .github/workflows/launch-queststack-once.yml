@@ -1,0 +1,18 @@
+name: Submit SoloProfit to QuestStack (one-time)
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/launch-queststack-once.yml'
+permissions:
+  contents: read
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check QuestStack submission code syntax
+        run: python3 -m py_compile scripts/submit_queststack_once.py
+      - name: Submit exactly one honest listing (no user data or tokens printed)
+        run: python3 -u scripts/submit_queststack_once.py
