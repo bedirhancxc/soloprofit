@@ -1,0 +1,18 @@
+name: Submit SoloProfit for free editorial review at The Tool Directory (once)
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/submit-tool-directory-once.yml'
+permissions:
+  contents: read
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate editorial submission script
+        run: python3 -m py_compile scripts/submit_tool_directory_once.py
+      - name: Submit free Business and Finance listing once
+        run: python3 -u scripts/submit_tool_directory_once.py
