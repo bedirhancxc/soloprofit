@@ -19,6 +19,7 @@ jobs:
             ("PromoteIndex public project", "https://promoteindex.com/api/v1/projects/soloprofit"),
             ("LaunchAgentic product page", "https://launchagentic.space/p/soloprofit"),
             ("TechTools public tool detail", "https://techtools.cz/launchpad-api/tools/7097"),
+            ("Zearches Software directory", "https://zearches.com/directory.php?slug=software-saas"),
           ]
           for name,url in sources:
               try:
@@ -28,6 +29,9 @@ jobs:
                       kind=response.headers.get("Content-Type","")
                       code=response.status
                   print("SOURCE:",name,"status:",code,"content-type:",kind)
+                  if name=="Zearches Software directory":
+                      visible="soloprofit" in body.lower() and "bedirhancxc.github.io" in body.lower()
+                      print("  SOLOPROFIT_PUBLIC_LISTING_FOUND:",visible)
                   if "json" in kind:
                       d=json.loads(body)
                       if not isinstance(d,dict): print("Response nonobject");continue
