@@ -25,5 +25,5 @@ c.value="0";vm.runInContext("calc()",context);assert.match(o.textContent,/greate
 c.value="40";m.value="-2";vm.runInContext("calc()",context);assert.equal(m.attributes["aria-invalid"],"true");
 m.value="0";vm.runInContext("calc()",context);assert.match(o.textContent,/Selling price: \$40\.00/);assert.equal(m.attributes["aria-invalid"],undefined);
 c.value="1e308";m.value="1e308";vm.runInContext("calc()",context);assert.match(o.textContent,/too large/);assert.equal(c.attributes["aria-invalid"],"true");assert.equal(m.attributes["aria-invalid"],"true");
-c.value="40";m.value="50";vm.runInContext("calc()",context);assert.match(o.textContent,/Selling price: \\$60\\.00/);assert.equal(c.attributes["aria-invalid"],undefined);assert.equal(m.attributes["aria-invalid"],undefined);
+c.value="40";m.value="50";vm.runInContext("calc()",context);assert.match(o.textContent,/Selling price: \$60\.00/);assert.equal(c.attributes["aria-invalid"],undefined);assert.equal(m.attributes["aria-invalid"],undefined);
 console.log("PASS: markup calculator formula, validation and mobile input semantics");
