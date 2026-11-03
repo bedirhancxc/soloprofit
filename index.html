@@ -40,7 +40,7 @@
         <p id="explain" class="card-intro">Estimate a rate based on income and expenses.</p>
         <div class="fields" id="fields"></div>
         <div class="result-box" id="resultBox" data-invalid="false">
-          <span class="result-label">Estimated result</span>
+          <span class="result-label">Your estimate</span>
           <output id="result" aria-live="polite" aria-atomic="true">Calculating…</output>
         </div>
         <div class="actions">
@@ -53,7 +53,7 @@
     </div>
   </section>
   <section id="all-tools" aria-labelledby="tools-heading">
-    <div class="section-heading"><h2 id="tools-heading">Explore all calculators</h2><p>Choose a calculator for more detail.</p></div>
+    <div class="section-heading"><h2 id="tools-heading">Explore all calculators</h2><p>Open a calculator for a full breakdown.</p></div>
     <div class="tool-grid">
       <a class="tool-card" href="freelance-hourly-rate/"><h3 class="tool-card-title" style="margin:0">Freelance hourly rate</h3><span class="tool-card-desc">Estimate your hourly rate from income, expenses and billable hours.</span><span class="tool-card-arrow" aria-hidden="true">Explore →</span></a>
       <a class="tool-card" href="profit-margin/"><h3 class="tool-card-title" style="margin:0">Profit margin</h3><span class="tool-card-desc">Find the percentage of revenue left after costs.</span><span class="tool-card-arrow" aria-hidden="true">Explore →</span></a>
@@ -88,7 +88,7 @@
 const models={
 freelance:{title:"Freelance Rate Calculator",description:"Find an hourly rate based on your income goal, expenses and billable time.",fields:[["income","Target annual income ($)",80000],["costs","Annual business expenses ($)",10000],["hours","Billable hours per week",25],["weeks","Billable weeks per year",46]],calc:v=>(v.income+v.costs)/(v.hours*v.weeks),unit:"/ hour",note:"Excludes personal income tax. Count only hours you can bill."},
 project:{title:"Project Quote Calculator",description:"Price a project using labor, direct costs and a target profit margin.",fields:[["hours","Estimated project hours",60],["rate","Hourly labor cost ($)",45],["expenses","Other project costs ($)",500],["margin","Target profit margin (%)",30]],calc:v=>(v.hours*v.rate+v.expenses)/(1-v.margin/100),unit:" project quote",note:"Margin is profit divided by selling price, not markup."},
-subscription:{title:"Subscription Revenue Calculator",description:"Estimate monthly profit after direct and fixed costs.",fields:[["customers","Paying subscribers",350],["price","Monthly subscription price ($)",29],["cost","Monthly direct cost per subscriber ($)",4],["fixed","Monthly fixed expenses ($)",1200]],calc:v=>v.customers*(v.price-v.cost)-v.fixed,unit:" / month",note:"Excludes taxes, refunds and fees unless entered as costs."},
+subscription:{title:"Subscription Profit Calculator",description:"Estimate monthly profit after subscriber costs and fixed expenses.",fields:[["customers","Paying subscribers",350],["price","Monthly subscription price ($)",29],["cost","Monthly direct cost per subscriber ($)",4],["fixed","Monthly fixed expenses ($)",1200]],calc:v=>v.customers*(v.price-v.cost)-v.fixed,unit:" / month",note:"Excludes taxes, refunds and fees unless entered as costs."},
 target:{title:"Monthly Profit Target Calculator",description:"Find how many customers you need to reach your monthly profit goal.",fields:[["goal","Monthly profit target ($)",10000],["price","Monthly price per customer ($)",29],["variable","Variable monthly cost per customer ($)",4],["fixed","Monthly fixed expenses ($)",1000]],calc:v=>Math.ceil((v.goal+v.fixed)/(v.price-v.variable)),unit:" customers",note:"Before taxes and any fees not included in your costs."}
 };
 let active="freelance",last="";
