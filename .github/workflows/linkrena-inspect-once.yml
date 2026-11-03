@@ -35,6 +35,14 @@ jobs:
           with urllib.request.urlopen(urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0 (SoloProfit free submission inspector)"}),timeout=25) as r:
               source=r.read(280000).decode("utf-8","replace")
               print("HTTP",r.status,"URL",r.url,"SIZE",len(source))
+          spec_url="https://linkrena.com/openapi.json"
+          with urllib.request.urlopen(urllib.request.Request(spec_url,headers={"User-Agent":"SoloProfit-OpenAPI-Inspector/1.0","Accept":"application/json"}),timeout=25) as api_resp:
+              import json
+              spec=json.load(api_resp)
+              print("OPENAPI_SPEC",spec.get("info"),"paths",list(spec.get("paths",{}).keys())[:110])
+              for route,actions in spec.get("paths",{}).items():
+                  if any(x in route.lower() for x in ("submit","launch","product","suggest")):
+                      print("OPENAPI_PATH",route,str(actions)[:4500])
           p=Parser();p.feed(source)
           print("FORMS",p.forms[:6])
           print("OPTIONS",p.options[:45])
