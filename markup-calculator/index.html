@@ -13,8 +13,8 @@
 </header>
 <main id="main-content"><p class="breadcrumb"><a href="../#all-tools">← All calculators</a></p><h1>Markup Calculator</h1><p>Find a selling price, gross profit and margin from your cost and markup.</p><article>
 <h2>Calculate your selling price</h2><p>Enter the item cost and markup percentage. Results update as you type.</p>
-<label>Item cost ($)<input id="cost" type="number" inputmode="decimal" min="0" step="any" value="40"></label>
-<label>Markup (%)<input id="markup" type="number" inputmode="decimal" min="0" step="any" value="50"></label>
+<label>Item cost ($)<input id="cost" aria-describedby="result" type="number" inputmode="decimal" min="0" step="any" value="40"></label>
+<label>Markup (%)<input id="markup" aria-describedby="result" type="number" inputmode="decimal" min="0" step="any" value="50"></label>
 <p><small>Example: $40 cost + 50% markup = $60 price and 33.33% margin.</small></p>
 <span class="result-label">Estimated price, profit and margin</span><output id="result" aria-live="polite" aria-atomic="true"></output><p><small>Estimates exclude tax, shipping, returns and other expenses unless included in cost.</small></p>
 <h2>Markup vs. margin</h2><p><strong>Markup</strong> is profit divided by cost. <strong>Margin</strong> is profit divided by selling price. A 50% markup on a $40 item produces a $60 price, $20 gross profit and a 33.33% gross margin.</p>
