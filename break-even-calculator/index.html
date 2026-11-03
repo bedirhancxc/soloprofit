@@ -102,6 +102,7 @@ function calc(){
   metrics.hidden=false;
 }
 document.getElementById("calculator").addEventListener("input",calc);
+document.getElementById("calculator").addEventListener("submit",e=>e.preventDefault());
 calc();
 </script>
 </body>
