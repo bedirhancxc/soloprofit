@@ -164,6 +164,11 @@ input[aria-invalid="true"]:focus-visible{outline-color:#b33a2d}
   *,*::before,*::after{scroll-behavior:auto!important;transition-duration:0s!important;animation-duration:0s!important}
 }
 
+/* Keep article-based calculator labels full-width on tablets, matching card forms. */
+@media (min-width:621px) and (max-width:900px){
+  .inner-page article>label{display:block;width:100%;margin:0 0 14px}
+}
+
 /* UX: give secondary-page forms room at tablet widths instead of squeezing labels. */
 @media (min-width:621px) and (max-width:900px){
   .inner-page .card form{grid-template-columns:minmax(0,1fr)}
