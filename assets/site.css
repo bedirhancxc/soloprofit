@@ -24,6 +24,8 @@ a:focus-visible,button:focus-visible,input:focus-visible{outline:3px solid #175b
 .site-links{display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:8px}
 .site-links a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;border-radius:10px;padding:9px 13px;font-weight:650;font-size:.91rem}
 .site-links a:hover,.site-links a[aria-current=page]{background:#294363}
+/* Make the current page identifiable without relying on background color alone. */
+.site-links a[aria-current=page]{text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:2px}
 .main-shell,main{max-width:1080px;margin:0 auto;padding:34px 20px 64px}
 .hero{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:30px 0 34px}
 .hero-copy{max-width:720px}
