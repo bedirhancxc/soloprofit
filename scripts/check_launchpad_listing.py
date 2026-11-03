@@ -33,3 +33,19 @@ else:
         if public_id:
             print("Live directory link: https://techtools.cz/tools/launchpad/?tool="+str(public_id))
     print("PASS: SoloProfit visibly listed by directory's public read API")
+
+    first_id = items[0].get("id")
+    if first_id is not None:
+        api_url = "https://techtools.cz/launchpad-api/tools/" + str(first_id)
+        try:
+            with urlopen(Request(api_url, headers={"User-Agent":"SoloProfitListingVerifier/1.0"}), timeout=25) as response:
+                details = json.loads(response.read(100000))
+            detail = details.get("data", details) if isinstance(details, dict) else {}
+            if not isinstance(detail, dict):
+                detail = {}
+            print("Public directory record fields:", sorted(detail.keys())[:30])
+            for metric in ("views", "view_count", "clicks", "click_count", "outbound_clicks", "upvotes"):
+                if metric in detail:
+                    print(f"Public directory {metric}: {detail[metric]}")
+        except Exception as error:
+            print("Detailed directory statistics unavailable:", type(error).__name__)
