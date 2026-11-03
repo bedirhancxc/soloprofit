@@ -221,3 +221,6 @@ input[aria-invalid="true"]:focus-visible{outline-color:#b33a2d}
 
 /* Keep long tool names and descriptions inside responsive cards. */
 .tool-card-title,.tool-card-desc{min-width:0;overflow-wrap:anywhere}
+
+/* Keep the keyboard skip link within narrow or zoomed viewports. */
+.skip-link{max-width:calc(100vw - 24px);white-space:normal;overflow-wrap:anywhere}
