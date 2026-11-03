@@ -80,10 +80,10 @@ function calc(){
     }
   }
   const perUnit=v.price-v.variable;
-  if(perUnit<=0&&v.fixed>0){
+  if(perUnit<0||(perUnit===0&&v.fixed>0)){
     fields.price.setAttribute("aria-invalid","true");
     fields.variable.setAttribute("aria-invalid","true");
-    answer.textContent="No break-even point: the selling price must exceed the variable cost per unit.";
+    answer.textContent="No break-even point: each sale must cover its variable cost, and a positive contribution is needed to cover fixed costs.";
     metrics.hidden=true;return;
   }
   const units=perUnit>0?Math.ceil(v.fixed/perUnit):0;
