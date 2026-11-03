@@ -1,0 +1,28 @@
+name: Verify two .com comparison names (one-time)
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/check-two-versus-domains-once.yml']
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Authoritative .com registry RDAP check
+        run: |
+          python3 - <<'PY'
+          import urllib.request,urllib.error,json
+          for domain in ('mobilversus.com','mobileversus.com'):
+              url='https://rdap.verisign.com/com/v1/domain/'+domain
+              try:
+                  req=urllib.request.Request(url,headers={'User-Agent':'DomainVerification/1.0','Accept':'application/rdap+json'})
+                  with urllib.request.urlopen(req,timeout=16) as r:
+                      data=json.load(r)
+                      print("DOMAIN",domain,"REGISTERED",data.get('ldhName'),"status",','.join(data.get('status',[])))
+              except urllib.error.HTTPError as exc:
+                  print("DOMAIN",domain,"NOT_REGISTERED" if exc.code==404 else "UNKNOWN",exc.code)
+              except Exception as exc:
+                  print("DOMAIN",domain,"UNKNOWN",type(exc).__name__)
+          PY
