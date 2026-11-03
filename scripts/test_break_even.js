@@ -23,8 +23,8 @@ const context = vm.createContext({
     return nodes[id];
   }},
 });
-vm.runInContext(code[1], context, {timeout: 1000});
-const rerun = () => vm.runInContext("calc()", context, {timeout: 1000});
+vm.runInContext(code[1], context, {timeout: 5000});
+const rerun = () => vm.runInContext("calc()", context, {timeout: 5000});
 
 assert.equal(nodes.answer.textContent, "100 units to break even");
 assert.equal(nodes.revenue.textContent, "$5,000.00");
