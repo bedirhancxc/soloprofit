@@ -90,7 +90,8 @@ function calc(){
   const salesRevenue=units*v.price;
   const profit=v.quantity*perUnit-v.fixed;
   if(!Number.isSafeInteger(units)||![salesRevenue,perUnit,profit].every(Number.isFinite)){
-    answer.textContent="Numbers are too large. Please enter smaller values.";
+    for(const id of ids)fields[id].setAttribute("aria-invalid","true");
+    answer.textContent="Numbers are too large to calculate reliably. Please enter smaller values.";
     metrics.hidden=true;return;
   }
   answer.textContent=units.toLocaleString("en-US")+" units to break even";
