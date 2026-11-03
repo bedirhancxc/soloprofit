@@ -244,3 +244,6 @@ input[aria-invalid="true"]:focus-visible{outline-color:#b33a2d}
   .site-links{min-width:0;max-width:100%;justify-content:flex-start}
   .site-links a{min-width:0;overflow-wrap:anywhere}
 }
+
+/* No public analytics figures; unobtrusive privacy disclosure only. */
+.privacy-note{display:block;margin-top:8px;font-size:.76rem;line-height:1.5;opacity:.82}
