@@ -5,7 +5,7 @@ import urllib.request
 from urllib.error import URLError
 
 SITES = [
-    "https://meweblink.com/",
+    "https://meweblink.com/submit/",
     "https://apprater.net/add",
     "https://thetooldirectory.com/submit-a-tool/",
 ]
