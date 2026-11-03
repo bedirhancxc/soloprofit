@@ -14,7 +14,7 @@ jobs:
       - name: Inspect submission form (no POST)
         run: |
           python3 - <<'PY'
-          import urllib.request,re
+          import urllib.request,urllib.parse,re
           from html.parser import HTMLParser
           class F(HTMLParser):
               def __init__(self):super().__init__();self.forms=[];self.form=None
@@ -34,6 +34,16 @@ jobs:
                       print("SITE",url,"HTTP",r.status,"final",r.url,"length",len(html))
                   p=F();p.feed(html);print("FORMS",p.forms[:4])
                   print("SCRIPTS",re.findall(r'<script[^>]*src=["\x27]([^"\x27]+)',html,re.I)[:9])
+                  if "thefreetoolsdirectory.com" in url:
+                      js_list=[x for x in re.findall('src="([^"]+)"',html) if "_next/static/chunks" in x and ("/submit/" in x or "/app/" in x)]
+                      print("SUBMIT_JS_FILES",js_list[:8])
+                      for js in js_list[:5]:
+                          with urllib.request.urlopen(urllib.request.Request(urllib.parse.urljoin(url,js),headers={"User-Agent":"SoloProfit-ReadOnlyInspection/1.0"}),timeout=25) as rr:
+                              source=rr.read(800000).decode("utf-8","replace")
+                          print("JS_FILE",js,"length",len(source))
+                          for term in ('/api/','fetch(','categorySlug','submitTool'):
+                              hits=[m.start() for m in re.finditer(re.escape(term),source,re.I)]
+                              print("JS_TERM",term,"COUNT",len(hits),"EXCERPTS",[source[max(0,k-75):k+210] for k in hits[:5]])
                   for patt in (r'<form[^>]+>',r'fetch\([^)]{0,200}',r'/api/[A-Za-z0-9/_-]+',r'reCAPTCHA|hcaptcha|cloudflare-turnstile'):
                       print("CLUE",patt,[x[:180] for x in re.findall(patt,html,re.I|re.S)[:7]])
               except Exception as err:print("ERROR",url,type(err).__name__,str(err)[:180])
