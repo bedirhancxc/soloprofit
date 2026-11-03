@@ -1,12 +1,14 @@
 /*
  * SoloProfit private web analytics. INACTIVE until a public project token is
- * configured. Do not commit PostHog personal API keys (phx_) here.
- * No visitor counter or public dashboard appears on the site.
+ * set at deployment from GitHub Actions variables. Never commit phx_ keys.
+ * Analytics configuration is a generated public browser file and never includes
+ * personal tokens, login keys or anything confidential. No public dashboard.
  */
 (function () {
   "use strict";
-  const PROJECT_TOKEN = ""; // Set ONLY the public phc_... project token
-  const API_HOST = "https://eu.i.posthog.com"; // Match project region
+  const config = window.SOLOPROFIT_ANALYTICS_CONFIG || {};
+  const PROJECT_TOKEN = typeof config.token === "string" ? config.token : "";
+  const API_HOST = typeof config.host === "string" ? config.host : "";
   if (!/^phc_[A-Za-z0-9]+$/.test(PROJECT_TOKEN)) return;
   if (!["https://eu.i.posthog.com", "https://us.i.posthog.com"].includes(API_HOST)) return;
   if (window.location.hostname !== "bedirhancxc.github.io" ||
