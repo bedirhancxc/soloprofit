@@ -1,0 +1,32 @@
+name: One-time English tech comparison domain RDAP
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/brand-domain-check-english-once.yml']
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - name: Look up .com candidates through Verisign RDAP
+        run: |
+          python3 - <<'PY'
+          import urllib.request,urllib.error,concurrent.futures
+          names=["specpair","specpairs","specduo","specmate","specmates","speclane","specnest","specspot","specwise","specpilot","specpick","specmatch","specbench","speclist","speccheck","specview","specfind","specguide","specbyte","specsee","specgo","specup","specro","specio","speciyo","specora","specaro","specado","specova","speclio","specano","specumo","specflow","specyard","specloop","speclens","specjoy","specpop","specbolt","specster","specway","speccraft","specflash","specrise","specflip","spechero","specdrop","specsnap","pickduo","pickpair","pickmate","pickwise","picklane","picknest","picktwin","pickmint","pickdock","pickchip","picktech","pickgear","pickdeal","pickgrid","pickbyte","pickloop","picksnap","pickbench","picklook","pickmore","pickright","pickbetter","pickfirst","pickside","pickscan","pickspot","pickscope","pickbase","pickster","pickvia","pickzip","pickgo","pickoro","pickaro","pickiyo","pickaxo","pickiva","pickera","pickora","picklio","pickivo","pickado","pickozo","pikwise","pikmatch","pikmate","pikduo","pikora","piklio","pikgo","gearpick","gearwise","gearduo","gearpair","gearmatch","gearlook","gearflip","gearspot","gearpickr","gearsnap","gearscope","gearbench","gearmate","gearmix","gearfit","twospec","twopick","twinpick","twinspec","twingear","twinmatch","twogear","matchspec","matchgear","matchmate","matchpick","matchwise","matchwiz","matchkit","matchlane","matchpickr","matchboxy","choosio","choosly","choosie","choosgo","choosup","choosmate","choosmart","chooso","choosego","choosewise","versly","versgo","versio","versaro","versova","versoza","versbuddy","versmate","verspair","versee","versup","verzo","comparego","compario","comparly","comparzy","comparit","comparlo","comparoo","comparo"]
+          def check(n):
+              d=n+".com"
+              try:
+                  u="https://rdap.verisign.com/com/v1/domain/"+d
+                  req=urllib.request.Request(u,headers={"User-Agent":"BrandResearch-Registrant/1.0","Accept":"application/rdap+json"})
+                  with urllib.request.urlopen(req,timeout=18) as r:
+                      return d,"REGISTERED" if r.status==200 else "UNKNOWN",str(r.status)
+              except urllib.error.HTTPError as e:
+                  return d,"NOT_REGISTERED" if e.code==404 else "UNKNOWN",str(e.code)
+              except Exception as e:return d,"UNKNOWN",type(e).__name__
+          print("TOTAL",len(names))
+          with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
+              for d,status,note in pool.map(check,names):print("DOMAIN",d,status,note)
+          print("NOTE: RDAP 404 is not a guarantee of purchase availability or trademark clearance")
+          PY
