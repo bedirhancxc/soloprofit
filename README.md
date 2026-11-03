@@ -31,4 +31,10 @@ node scripts/test_break_even.js
 
 For exact behavior and limitations of each calculation, consult the corresponding page. All monetary estimates are illustrative, not legal, tax or financial advice.
 
-**Traffic and analytics:** This repository's GitHub Actions runs are publication and availability checks, **not website visitor counts**. Google Search Console reports only Google Search visibility; full-site analytics have not been configured.
+**Private traffic analytics:** All six SoloProfit calculator pages now include a shared, privacy-focused PostHog loader in `assets/analytics.js`. It is **inactive until the site owner's public `phc_...` project token is configured**, and makes no analytics requests while inactive. No public visit count, leaderboard or dashboard is shown.
+
+To activate it, create/connect a private PostHog project, enable **Cookieless server hash mode** in Project Settings > Web analytics, then set the **public project token** and matching EU/US ingestion host in `assets/analytics.js`. Deploy and verify that one actual browser visit creates a `$pageview` event. Never publish a personal `phx_...` API key, passwords or other secrets.
+
+Only a sanitized page path and referring domain are intentionally captured; interactive forms, calculator numbers, surveys, and session replay are excluded. The site footer discloses cookieless analytics without displaying visitor figures. Daily unique-user metrics are approximate and may include some undetected bots. Site visitors cannot see the private PostHog dashboard; the site owner can authorize ChatGPT to read traffic results using the PostHog connection.
+
+GitHub Actions tests are **not** human visitors, and Search Console measures only Google Search visibility.
