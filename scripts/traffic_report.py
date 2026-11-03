@@ -18,7 +18,14 @@ def main():
         API, headers={"User-Agent": "SoloProfitTrafficReporter/1.0", "Accept": "application/json"}
     )
     with urllib.request.urlopen(request, timeout=30) as response:
-        data = json.load(response)
+        raw = response.read(40000).decode("utf-8", "replace")
+        content_type = response.headers.get("Content-Type", "unknown")
+        print(f"Traffic service HTTP {response.status}; type={content_type}; bytes={len(raw)}")
+    try:
+        data = json.loads(raw)
+    except json.JSONDecodeError:
+        print("Traffic service returned non-JSON content, first 180 chars:", repr(raw[:180]))
+        raise RuntimeError("Analytics provider response invalid; no visitor claims can be made")
     results = {}
     for scope in ("today", "yesterday", "total"):
         period = data.get(scope)
