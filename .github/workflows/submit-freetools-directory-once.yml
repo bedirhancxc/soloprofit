@@ -1,0 +1,64 @@
+name: Submit SoloProfit to relevant free calculators directory once
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/submit-freetools-directory-once.yml']
+permissions:
+  contents: read
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: Check public listing and submit one genuine free tool
+        run: |
+          python3 - <<'PY'
+          import json
+          import urllib.parse
+          import urllib.error
+          import urllib.request
+          base="https://thefreetoolsdirectory.com"
+          site="https://bedirhancxc.github.io/soloprofit/"
+          headers={"User-Agent":"SoloProfit/1.0 (one-time owner-authorized listing)","Accept":"application/json"}
+          try:
+              q=base+"/api/search?"+urllib.parse.urlencode({"q":"SoloProfit","limit":20})
+              with urllib.request.urlopen(urllib.request.Request(q,headers=headers),timeout=30) as response:
+                  data=json.loads(response.read(120000))
+              matches=data.get("results",[]) if isinstance(data,dict) else []
+              if any("bedirhancxc.github.io/soloprofit" in json.dumps(item).lower() for item in matches):
+                  print("SoloProfit already listed; no duplicate submission.")
+                  raise SystemExit(0)
+          except urllib.error.HTTPError as err:
+              print("Read-only directory search unavailable:",err.code)
+          payload={
+              "siteName":"SoloProfit",
+              "url":site,
+              "description":"Free business calculators for freelancers and small businesses: estimate hourly billing rates, profit margins, product markup, selling prices, SaaS break-even subscribers and break-even unit sales. No sign-up, no payment. Calculations happen instantly in the browser with formulas and worked examples.",
+              "categorySlug":None,
+              "email":None,
+          }
+          request=urllib.request.Request(
+              base+"/api/submit",method="POST",data=json.dumps(payload).encode("utf-8"),
+              headers={**headers,"Content-Type":"application/json"}
+          )
+          try:
+              with urllib.request.urlopen(request,timeout=40) as response:
+                  code=response.status
+                  raw=response.read(25000).decode("utf-8","replace")
+          except urllib.error.HTTPError as err:
+              code=err.code
+              raw=err.read(25000).decode("utf-8","replace")
+          try:
+              body=json.loads(raw)
+          except Exception:
+              body={}
+          print("Free Tools Directory response HTTP",code)
+          print("Public response fields:",list(body.keys())[:12] if isinstance(body,dict) else type(body).__name__)
+          if 200<=code<300:
+              print("Submission accepted by endpoint, publication requires editorial review.")
+              print("No human visits inferred from submission.")
+          else:
+              detail=body.get("error") if isinstance(body,dict) else ""
+              print("Submission not accepted:",str(detail)[:200])
+              raise SystemExit(1)
+          PY
