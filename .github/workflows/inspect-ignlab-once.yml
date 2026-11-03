@@ -1,0 +1,38 @@
+name: Inspect free Ignlab product submission form (one-time)
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/inspect-ignlab-once.yml'
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Inspect public no-login form without submitting
+        run: |
+          python3 - <<'PY'
+          import urllib.request,re
+          from html.parser import HTMLParser
+          class Forms(HTMLParser):
+              def __init__(self): super().__init__(); self.forms=[]
+              def handle_starttag(self,tag,attrs):
+                  d=dict(attrs)
+                  if tag=="form": self.forms.append({"action":d.get("action"),"method":d.get("method"),"fields":[]})
+                  if tag in ("input","textarea","select") and self.forms:
+                      self.forms[-1]["fields"].append({k:d.get(k) for k in ("name","type","required","placeholder","id") if k in d})
+          for url in ["https://launch.ignlab.net/","https://launch.ignlab.net/submit","https://launch.ignlab.net/submit-tool"]:
+              try:
+                  with urllib.request.urlopen(urllib.request.Request(url,headers={"User-Agent":"SoloProfitAuthorizedLauncher/1.0"}),timeout=20) as response:
+                      html=response.read(300000).decode("utf-8","replace")
+                      final=response.geturl()
+                  parser=Forms();parser.feed(html)
+                  print("Page:",url,"final:",final,"size:",len(html),"form-count:",len(parser.forms))
+                  for form in parser.forms[:4]:print("Form:",form)
+                  links=re.findall(r'href="([^"]*(?:submit|launch)[^"]*)"',html,re.I)
+                  print("Related links:",links[:12])
+              except Exception as error:
+                  print(url,type(error).__name__,str(error)[:100])
+          PY
