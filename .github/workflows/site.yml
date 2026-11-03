@@ -52,6 +52,23 @@ jobs:
           POSTHOG_PROJECT_TOKEN: ${{ vars.POSTHOG_PROJECT_TOKEN }}
           POSTHOG_API_HOST: ${{ vars.POSTHOG_API_HOST }}
         run: python3 scripts/build_analytics_config.py
+      - name: Report analytics readiness without exposing configuration
+        run: |
+          python3 - <<'PY'
+          import pathlib
+          script = pathlib.Path("assets/analytics-config.js").read_text()
+          enabled = 'phc_' in script and 'posthog.com' in script
+          state = "ENABLED" if enabled else "DISABLED"
+          summary = "### Private analytics deployment\n"
+          summary += f"- Browser tracking: **{state}**\n"
+          if not enabled:
+              summary += "- Repo Actions variables POSTHOG_PROJECT_TOKEN and POSTHOG_API_HOST were unavailable to this build.\n"
+          else:
+              summary += "- Browser project configuration was generated for the configured region. Verify server cookieless mode and a real received pageview separately.\n"
+          with open(__import__("os").environ["GITHUB_STEP_SUMMARY"], "a") as out:
+              out.write(summary)
+          print("PostHog deployment readiness:", state)
+          PY
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .
