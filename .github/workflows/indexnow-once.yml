@@ -1,0 +1,31 @@
+name: Notify IndexNow of current SoloProfit pages (one-time)
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/indexnow-once.yml'
+permissions:
+  contents: read
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - uses: actions/checkout@v4
+      - name: Wait for the key to be published on GitHub Pages
+        shell: bash
+        run: |
+          set -euo pipefail
+          expected="$(cat 2148619bda0c75df72d69909f542441e.txt)"
+          url="https://bedirhancxc.github.io/soloprofit/2148619bda0c75df72d69909f542441e.txt"
+          found=0
+          for attempt in $(seq 1 20); do
+            observed="$(curl --location --silent --show-error --max-time 15 "$url" || true)"
+            if [[ "$observed" == "$expected" ]]; then found=1; break; fi
+            echo "Verification file not public yet (attempt $attempt)"
+            sleep 10
+          done
+          [[ "$found" == 1 ]] || { echo "Public IndexNow verification file not found"; exit 1; }
+          echo "Public verification key is accessible"
+      - name: Notify Bing and other IndexNow participants
+        run: python3 scripts/submit_indexnow.py
