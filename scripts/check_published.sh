@@ -11,6 +11,7 @@ download() {
   curl --fail --location --silent --show-error \
     --retry 3 --retry-delay 5 --max-time 30 \
     --user-agent 'SoloProfitSiteMonitor/1.0' \
+    --dump-header "$workdir/headers.txt" \
     --output "$dest" "$url"
 }
 
@@ -39,9 +40,54 @@ PY
 
 for path in / /freelance-hourly-rate/ /profit-margin/ /subscription-break-even/ /markup-calculator/ /break-even-calculator/; do
   download "$base$path" "$workdir/page.html"
-  if ! grep -qi '<html' "$workdir/page.html"; then
-    echo "FAIL: $base$path did not return HTML" >&2
-    exit 1
-  fi
+  python3 - "$workdir/page.html" "$workdir/headers.txt" "$base$path" <<'PY'
+from html.parser import HTMLParser
+from pathlib import Path
+import sys
+
+class Page(HTMLParser):
+    def __init__(self):
+        super().__init__()
+        self.title = False
+        self.title_text = ""
+        self.h1 = 0
+        self.canonical = []
+        self.noindex = False
+        self.description = False
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        if tag == "title":
+            self.title = True
+        if tag == "h1":
+            self.h1 += 1
+        if tag == "link" and "canonical" in attrs.get("rel", "").lower().split():
+            self.canonical.append(attrs.get("href"))
+        if tag == "meta":
+            name = attrs.get("name", "").lower()
+            if name == "robots" and "noindex" in attrs.get("content", "").lower():
+                self.noindex = True
+            if name == "description" and attrs.get("content", "").strip():
+                self.description = True
+
+    def handle_data(self, data):
+        if self.title:
+            self.title_text += data
+
+    def handle_endtag(self, tag):
+        if tag == "title":
+            self.title = False
+
+page = Page()
+page.feed(Path(sys.argv[1]).read_text(encoding="utf-8"))
+headers = Path(sys.argv[2]).read_text(encoding="utf-8").lower()
+expected = sys.argv[3]
+assert page.title_text.strip(), f"Missing live page title: {expected}"
+assert page.description, f"Missing live page description: {expected}"
+assert page.h1 == 1, f"Expected one H1 on live page: {expected}"
+assert page.canonical == [expected], f"Live canonical URL mismatch: {expected}"
+assert not page.noindex and "x-robots-tag: noindex" not in headers, f"Live page blocks indexing: {expected}"
+print(f"PASS: Crawlable HTML and canonical: {expected}")
+PY
 done
-echo "PASS: All 6 public calculator pages can be fetched."
+echo "PASS: Six public calculator pages have crawlable HTML, metadata and matching canonical URLs."
