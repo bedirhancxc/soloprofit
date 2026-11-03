@@ -25,9 +25,9 @@
 <form id="calculator" novalidate>
 <div class="fields">
 <label for="fixed">Monthly fixed costs ($)<input id="fixed" type="number" min="0" step="any" value="3000" inputmode="decimal" required><small>For example: rent, software and salaries</small></label>
-<label for="price">Selling price per unit ($)<input id="price" type="number" min="0" step="any" value="50" inputmode="decimal" required><small>What you charge for one sale</small></label>
+<label for="price">Selling price per unit ($)<input id="price" type="number" min="0" step="any" value="50" inputmode="decimal" required><small>Price charged for each item or service</small></label>
 <label for="variable">Variable cost per unit ($)<input id="variable" type="number" min="0" step="any" value="20" inputmode="decimal" required><small>For example: materials, delivery and fees</small></label>
-<label for="quantity">Expected monthly units sold<input id="quantity" type="number" min="0" step="1" value="150" inputmode="numeric" required><small>Used to estimate monthly profit</small></label>
+<label for="quantity">Expected monthly units sold<input id="quantity" type="number" min="0" step="1" value="150" inputmode="numeric" required><small>Change this to see profit at your expected sales</small></label>
 </div>
 </form>
 <div class="results" role="status" aria-live="polite" aria-atomic="true">
@@ -38,7 +38,7 @@
 <div class="metric"><span>Estimated monthly profit</span><strong id="profit"></strong></div>
 </div>
 </div>
-<p class="notice">All amounts are in USD. Results exclude taxes and costs you leave out. Your inputs stay in your browser.</p>
+<p class="notice">Amounts are in USD. Include all relevant costs for a useful estimate; taxes are not added automatically. Your inputs stay in your browser.</p>
 </section>
 <h2>How to calculate the break-even point</h2>
 <p><strong>Break-even units = fixed costs ÷ (selling price per unit − variable cost per unit).</strong> Round up to a whole unit. The amount left after each unit's variable cost helps pay fixed costs.</p>
