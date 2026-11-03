@@ -1,0 +1,18 @@
+name: Submit SoloProfit to PromoteIndex after queue wait (one-time)
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/launch-promoteindex-ticket-once.yml'
+permissions:
+  contents: read
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 27
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate queue-compliant submission script
+        run: python3 -m py_compile scripts/submit_promoteindex_ticket_once.py
+      - name: Wait for provider-signed return time and submit once
+        run: python3 -u scripts/submit_promoteindex_ticket_once.py
