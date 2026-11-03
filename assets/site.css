@@ -237,3 +237,10 @@ input[aria-invalid="true"]:focus-visible{outline-color:#b33a2d}
 
 /* Keep benefit badges and instructional steps within narrow/zoomed viewports. */
 .trust-row span,.step{min-width:0;overflow-wrap:anywhere}
+
+/* Let the header reflow before navigation crowds the brand on tablets. */
+@media (min-width:621px) and (max-width:900px){
+  .site-topbar{flex-wrap:wrap;gap:8px;padding-block:12px}
+  .site-links{min-width:0;max-width:100%;justify-content:flex-start}
+  .site-links a{min-width:0;overflow-wrap:anywhere}
+}
