@@ -1,0 +1,55 @@
+name: Inspect Linkrena free launch submission (read-only)
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/linkrena-inspect-once.yml']
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Inspect the actual Linkrena submission contract without POST
+        run: |
+          python3 - <<'PY'
+          import re,urllib.request,urllib.parse
+          from html.parser import HTMLParser
+          class Parser(HTMLParser):
+              def __init__(self):super().__init__();self.forms=[];self.cur=None;self.scripts=[];self.options=[];self.select=None;self.opt=None
+              def handle_starttag(self,t,attrs):
+                  a=dict(attrs)
+                  if t=="form":self.cur={"action":a.get("action"),"method":a.get("method"),"fields":[]};self.forms.append(self.cur)
+                  if t in ("input","select","textarea","button") and self.cur is not None:
+                      self.cur["fields"].append({k:a.get(k) for k in ("name","type","id","placeholder","required") if k in a})
+                  if t=="script" and a.get("src"):self.scripts.append(a.get("src"))
+                  if t=="select":self.select=a.get("name") or a.get("id")
+                  if t=="option" and self.select:self.opt=[a.get("value",""),""]
+              def handle_data(self,s):
+                  if self.opt is not None:self.opt[1]+=s
+              def handle_endtag(self,t):
+                  if t=="option" and self.opt is not None:self.options.append([self.select]+self.opt);self.opt=None
+                  if t=="select":self.select=None
+                  if t=="form":self.cur=None
+          url="https://linkrena.com/"
+          with urllib.request.urlopen(urllib.request.Request(url,headers={"User-Agent":"Mozilla/5.0 (SoloProfit free submission inspector)"}),timeout=25) as r:
+              source=r.read(280000).decode("utf-8","replace")
+              print("HTTP",r.status,"URL",r.url,"SIZE",len(source))
+          p=Parser();p.feed(source)
+          print("FORMS",p.forms[:6])
+          print("OPTIONS",p.options[:45])
+          print("SCRIPTS",p.scripts[:18])
+          for t in ("submit for free","fetch(","/api/","recaptcha","turnstile","submit-product","submit-tool","csrf"):
+              m=[z.start() for z in re.finditer(re.escape(t),source,re.I)]
+              print("HTML",t,"COUNT",len(m),"SAMPLES",[source[max(0,x-100):x+180] for x in m[:3]])
+          for url2 in p.scripts[:10]:
+              if not url2.startswith("/") and not url2.startswith("https://linkrena.com/"):continue
+              try:
+                  url2=urllib.parse.urljoin(url,url2)
+                  with urllib.request.urlopen(urllib.request.Request(url2,headers={"User-Agent":"Mozilla/5.0"}),timeout=18) as r:
+                      script=r.read(450000).decode("utf-8","replace")
+                  for t in ("/api/submit","/api/launch","/api/products","turnstile","recaptcha","fetch("):
+                      m=[z.start() for z in re.finditer(re.escape(t),script,re.I)]
+                      if m:print("JS",url2.split("?")[0][-90:],t,"HITS",len(m),"SAMPLES",[script[max(0,x-100):x+210] for x in m[:3]])
+              except Exception as e:print("JS_ERROR",type(e).__name__,str(e)[:120])
+          PY
