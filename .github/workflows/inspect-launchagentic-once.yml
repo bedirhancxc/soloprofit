@@ -1,0 +1,28 @@
+name: Inspect public LaunchAgentic submission requirements (one-time)
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/inspect-launchagentic-once.yml'
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Read official agent submission schema (no mutation)
+        run: |
+          python3 - <<'PY'
+          import json
+          import urllib.request
+          url = "https://launchagentic.space/api/v1/launch/schema"
+          with urllib.request.urlopen(urllib.request.Request(url,headers={"Accept":"application/json","User-Agent":"SoloProfitAgent/1.0"}),timeout=25) as response:
+              body=response.read(50000).decode("utf-8")
+              print("Schema HTTP",response.status)
+              try:
+                  data=json.loads(body)
+                  print("Public schema:",json.dumps(data,ensure_ascii=False,indent=2)[:17000])
+              except Exception:
+                  print("Unexpected response type",response.headers.get("Content-Type"),"length",len(body))
+          PY
