@@ -12,5 +12,5 @@ jobs:
     timeout-minutes: 3
     steps:
       - uses: actions/checkout@v4
-      - name: Verify public SoloProfit listing on TechTools
+      - name: Check optional public click counters and listing status
         run: python3 -u scripts/check_launchpad_listing.py
