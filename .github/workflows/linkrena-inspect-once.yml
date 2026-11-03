@@ -47,11 +47,11 @@ jobs:
                       hits=[m.start() for m in re.finditer(re.escape(q),page,re.I)]
                       print("SUBMIT_HTML_MATCH",q,"COUNT",len(hits),"SAMPLES",[page[max(0,x-80):x+230] for x in hits[:3]])
                   for src in sp.scripts:
-                      if "/app/submit/" not in src and "/submit/" not in src:continue
+                      if not (src.startswith("/_next/static/chunks/") and any(k in src for k in ("33rnzc89", "3r_w4", "33t46", "36b_fuz"))):continue
                       with urllib.request.urlopen(urllib.request.Request(urllib.parse.urljoin(candidate,src),headers={"User-Agent":"Mozilla/5.0"}),timeout=25) as r2:
                           js=r2.read(500000).decode("utf-8","replace")
                       print("SUBMIT_JS_FILE",src[:200],"SIZE",len(js))
-                      for q in ("/api/","fetch(","turnstile","captcha","url","submit"):
+                      for q in ("/api/submit", "/api/launch", "/api/v1", "method:\"POST\"", "fetch(", "turnstile", "captcha", "submit"):
                           hits=[m.start() for m in re.finditer(re.escape(q),js,re.I)]
                           print("SUBMIT_JS_MATCH",q,"COUNT",len(hits),"SAMPLES",[js[max(0,x-100):x+230] for x in hits[:5]])
               except Exception as error:
