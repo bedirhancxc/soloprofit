@@ -1,0 +1,44 @@
+name: Inspect Ignlab public no-account submit API (read-only once)
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/inspect-ignlab-api-once.yml']
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Inspect official public submission form with no POST
+        run: |
+          python3 - <<'PY'
+          import re,urllib.request
+          from html.parser import HTMLParser
+          class P(HTMLParser):
+              def __init__(self):super().__init__();self.forms=[];self.form=None;self.select=None;self.opt=None;self.scripts=[]
+              def handle_starttag(self,t,attrs):
+                  a=dict(attrs)
+                  if t=="form":self.form={"method":a.get("method"),"action":a.get("action"),"fields":[],"options":[]};self.forms.append(self.form)
+                  elif self.form is not None:
+                      if t in ("input","select","textarea","button"):self.form["fields"].append((t,a.get("name"),a.get("type"),a.get("required"),a.get("id")))
+                      if t=="select":self.select=a.get("name")
+                      if t=="option" and self.select:self.opt=[self.select,a.get("value"),""]
+                  if t=="script" and a.get("src"):self.scripts.append(a.get("src"))
+              def handle_data(self,s):
+                  if self.opt:self.opt[2]+=s
+              def handle_endtag(self,t):
+                  if t=="option" and self.opt:self.form["options"].append(self.opt);self.opt=None
+                  if t=="select":self.select=None
+                  if t=="form":self.form=None
+          u="https://launch.ignlab.net/submit.html"
+          req=urllib.request.Request(u,headers={"User-Agent":"Mozilla/5.0 SoloProfit-FormInspector/1.0"})
+          with urllib.request.urlopen(req,timeout=25) as r:
+              source=r.read(200000).decode("utf-8","replace")
+              print("PUBLIC FORM HTTP",r.status,"bytes",len(source))
+          p=P();p.feed(source)
+          print("FORM",p.forms)
+          print("SCRIPT_URLS",p.scripts[:12])
+          for patt in (r"fetch\([^)]{0,300}",r"submit\.php.{0,200}",r"/api/[A-Za-z0-9/_-]+",r"math_answer.{0,500}",r"submitForm.{0,500}",r"form\.addEventListener\(.{0,250}"):
+              print("PATTERN",patt,"MATCHES",[x[:600] for x in re.findall(patt,source,re.I|re.S)[:6]])
+          PY
