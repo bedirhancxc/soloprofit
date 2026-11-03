@@ -1,0 +1,18 @@
+name: Submit SoloProfit to MeWebLink (one time)
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/submit-meweblink-once.yml'
+permissions:
+  contents: read
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check submission code
+        run: python3 -m py_compile scripts/submit_meweblink_once.py
+      - name: Submit free Business category listing once
+        run: python3 -u scripts/submit_meweblink_once.py
