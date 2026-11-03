@@ -61,3 +61,28 @@ assert.match(css, /\.calc-tabs\s*\{display:grid;grid-template-columns:repeat\(2,
 assert.match(css, /\.inner-page \.card form\s*\{grid-template-columns:1fr\}/, "Phone detail forms need one column");
 assert.match(css, /\[hidden\]\s*\{display:none!important\}/, "Hidden result panels must stay hidden");
 console.log("PASS: navigation fragments and static phone/tablet CSS checks");
+
+const analytics = fs.readFileSync("assets/analytics.js", "utf8");
+new vm.Script(analytics, { filename: "assets/analytics.js" });
+assert.ok(analytics.includes('cookieless_mode: "always"'), "Analytics must be cookieless");
+assert.ok(analytics.includes('person_profiles: "never"'), "No visitor profiling");
+assert.ok(analytics.includes("autocapture: false"), "No calculator input tracking");
+assert.ok(analytics.includes("disable_session_recording: true"), "No session replay");
+assert.ok(analytics.includes("capture_pageview: false"), "No unsanitized automatic pageviews");
+assert.ok(analytics.includes("$referring_domain: referrer"), "Record only referring domains");
+assert.doesNotMatch(analytics, /phx_[A-Za-z0-9]{8,}/, "Never expose private PostHog API key");
+for (const url of urls) {
+  const suffix = new URL(url).pathname.replace(/^\\/soloprofit\\/?/, "");
+  const file = path.join(suffix, "index.html");
+  const html = fs.readFileSync(file, "utf8");
+  const analyticsPath = suffix ? "../assets/analytics.js" : "assets/analytics.js";
+  assert.ok(html.includes('src="' + analyticsPath + '"'), "Analytics loader missing: " + file);
+  assert.ok(html.includes("cookieless page-view analytics"), "Privacy notice missing: " + file);
+  assert.doesNotMatch(html, /id="visitor-count"|id="analytics-dashboard"/, "No public analytics counter: " + file);
+}
+if (analytics.includes('const PROJECT_TOKEN = "";')) {
+  const sandbox = { window: {}, document: {} };
+  new vm.Script(analytics).runInNewContext(sandbox);
+  assert.equal(sandbox.window.posthog, undefined, "Inactive analytics must not load third-party code");
+}
+console.log("PASS: six pages wired to disabled-by-default private analytics without public counters");
