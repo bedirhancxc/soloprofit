@@ -1,0 +1,32 @@
+name: One-time short bilingual brand com availability
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/one-time-short-brand-rdap.yml']
+permissions:
+  contents: read
+jobs:
+  domain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 7
+    steps:
+      - name: Look up candidate names at Verisign registry RDAP
+        run: |
+          python3 - <<'PY'
+          import urllib.request, urllib.error, concurrent.futures
+          names=["kiyaso","kiyaza","kiyazo","kiyaro","kiyavo","kiyasa","kiyasio","kiyasso","kiyom","kiyoma","kiyasla","kiyasli","kiyaski","bakyo","bakio","bakso","baksa","bakro","bakra","bakko","bakza","bakta","bakti","bakiyo","baksi","bakla","baksio","bakver","denki","denko","denkio","denkyo","denksa","denkla","denkli","denkle","denkta","denkva","denkra","denky","esleo","esleya","esleio","esleta","eslemi","eslen","eslena","hangio","hangyo","hangla","hangra","hangza","hangoo","hangmi","tekmi","tekyo","tekzo","tekio","tekia","tekra","tekro","tekva","tekli","tekko","tekza","tekso","verzo","verza","verio","verso","versio","versly","versy","vergo","vezio","vezra","vezzo","tartio","tartla","tarto","tartya","tartmi","secio","secko","seczo","secyo","secmi","karsio","karso","karsa","karsla","karsyo"]
+          def check(n):
+              d=n+".com"
+              u="https://rdap.verisign.com/com/v1/domain/"+d
+              try:
+                  req=urllib.request.Request(u,headers={"User-Agent":"BrandResearch/1.0","Accept":"application/rdap+json"})
+                  with urllib.request.urlopen(req,timeout=15) as r:
+                      return d,"REGISTERED" if r.status==200 else "UNVERIFIED",r.status
+              except urllib.error.HTTPError as e:
+                  return d,"NOT_REGISTERED" if e.code==404 else "UNVERIFIED",e.code
+              except Exception as e:return d,"UNVERIFIED",str(e)[:70]
+          print("TOTAL",len(names))
+          with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
+              for d,status,note in executor.map(check,names):
+                  print("RESULT",d,status,note)
+          PY
