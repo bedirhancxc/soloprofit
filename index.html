@@ -103,7 +103,7 @@ function compute(){
   let problem="";
   if(active==="freelance"&&(v.hours<=0||v.weeks<=0))problem="Billable hours and weeks must be greater than zero.";
   if(active==="project"&&v.margin>=100)problem="Target profit margin must be below 100%.";
-  if(active==="subscription"&&!Number.isSafeInteger(v.customers))problem="Paying subscribers must be a whole number.";
+  if(active==="subscription"&&!Number.isSafeInteger(v.customers)){problem="Paying subscribers must be a whole number."; $("customers").setAttribute("aria-invalid","true")}
   if(active==="target"&&v.price<=v.variable)problem="Monthly price must exceed the variable cost per customer.";
   if(problem){$("result").textContent=problem;$("resultBox").dataset.invalid="true";return}
   const value=m.calc(v);
