@@ -234,3 +234,8 @@ input[aria-invalid="true"]:focus-visible{outline-color:#b33a2d}
 
 /* Keep the keyboard skip link within narrow or zoomed viewports. */
 .skip-link{max-width:calc(100vw - 24px);white-space:normal;overflow-wrap:anywhere}
+
+/* Transparent, unobtrusive disclosure for anonymous visit measurement. */
+.analytics-disclosure{display:block;margin-top:9px;font-size:.78rem;line-height:1.5;opacity:.85}
+.analytics-disclosure a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+.analytics-disclosure a:focus-visible{outline:2px solid currentColor;outline-offset:3px}

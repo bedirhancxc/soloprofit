@@ -87,7 +87,7 @@
   </section>
   <p class="info-note">Amounts are in USD. Results are estimates, not financial, tax or legal advice. Inputs stay in your browser.</p>
 </main>
-<footer>© <span id="year"></span> SoloProfit · Free business tools · No signup required</footer>
+<footer>© <span id="year"></span> SoloProfit · Free business tools · No signup required<small class="analytics-disclosure">Anonymous page views are measured by <a href="https://icount.kr/" target="_blank" rel="noopener noreferrer">iCount</a> without cookies. Calculator values are not intentionally sent to analytics.</small></footer>
 <script>
 "use strict";
 const models={
@@ -136,5 +136,5 @@ $("copy").addEventListener("click",async()=>{if(!last)return;if(!navigator.clipb
 $("csv").addEventListener("click",()=>{if(!last)return;const m=models[active];let rows=[["Field","Value"],...m.fields.map(([key,label])=>[label,$(key).value]),["Result",last]];const csv=rows.map(r=>r.map(v=>'"'+String(v).replaceAll('"','""')+'"').join(",")).join("\r\n");const url=URL.createObjectURL(new Blob([csv],{type:"text/csv;charset=utf-8"}));const a=document.createElement("a");a.href=url;a.download="soloprofit-"+active+".csv";a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)});
 $("year").textContent=new Date().getFullYear();render();
 </script>
-</body>
+<script defer src="https://icount.kr/c.js?id=bedirhancxc.github.io"></script></body>
 </html>
