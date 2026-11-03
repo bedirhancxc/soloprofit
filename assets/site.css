@@ -111,6 +111,9 @@ footer a{color:var(--blue)}
 @media (min-width:621px) and (max-width:900px){
   .calculator-layout{grid-template-columns:1fr}
   .calc-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .fields{grid-template-columns:1fr}
+}
+@media (min-width:761px) and (max-width:900px){
   .fields{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 /* Keep navigation and action labels accessible at 320px without horizontal scrolling. */
