@@ -1,0 +1,16 @@
+name: Inspect three relevant no-account directory forms (once)
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/inspect-free-directories-once.yml'
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+      - name: Inspect free forms without submitting
+        run: python3 -u scripts/inspect_free_submission_forms.py
