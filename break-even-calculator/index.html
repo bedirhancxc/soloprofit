@@ -28,7 +28,7 @@
 <label for="fixed">Monthly fixed costs ($)<input id="fixed" aria-describedby="answer" type="number" min="0" step="any" value="3000" inputmode="decimal" required><small>For example: rent, software and salaries</small></label>
 <label for="price">Selling price per unit ($)<input id="price" aria-describedby="answer" type="number" min="0" step="any" value="50" inputmode="decimal" required><small>Price charged for each item or service</small></label>
 <label for="variable">Variable cost per unit ($)<input id="variable" aria-describedby="answer" type="number" min="0" step="any" value="20" inputmode="decimal" required><small>For example: materials, delivery and fees</small></label>
-<label for="quantity">Expected monthly units sold<input id="quantity" aria-describedby="answer" type="number" min="0" step="1" value="150" inputmode="numeric" required><small>Change this to see profit at your expected sales</small></label>
+<label for="quantity">Expected monthly units sold<input id="quantity" aria-describedby="answer" type="number" min="0" step="1" value="150" inputmode="numeric" required><small>Example: 150 units. This changes estimated profit, not break-even units.</small></label>
 </div>
 </form>
 <div class="results" role="status" aria-live="polite" aria-atomic="true">
@@ -36,14 +36,14 @@
 <div class="metrics" id="metrics" hidden>
 <div class="metric"><span>Revenue needed to break even</span><strong id="revenue"></strong></div>
 <div class="metric"><span>Contribution per unit</span><strong id="contribution"></strong></div>
-<div class="metric"><span>Estimated monthly profit</span><strong id="profit"></strong></div>
+<div class="metric"><span>Estimated monthly profit or loss</span><strong id="profit"></strong></div>
 </div>
 </div>
 <p class="notice">Amounts are in USD. Include all relevant costs for a useful estimate; taxes are not added automatically. Your inputs stay in your browser.</p>
 </section>
 <h2>How to calculate the break-even point</h2>
 <p><strong>Break-even units = fixed costs ÷ (selling price per unit − variable cost per unit).</strong> Round up to a whole unit. The amount left after each unit's variable cost helps pay fixed costs.</p>
-<p><strong>Break-even revenue = break-even units × selling price.</strong> Revenue uses the rounded whole-unit total. Estimated profit = units sold × (price − variable cost) − fixed costs.</p>
+<p><strong>Break-even revenue = break-even units × selling price.</strong> Revenue uses the rounded whole-unit total. Estimated profit or loss = expected units sold × (price − variable cost) − fixed costs. A negative result means a loss.</p>
 <div class="example">
 <h3>Break-even example</h3>
 <p>A shop has $3,000 in monthly fixed costs. It sells items for $50 each, with $20 in variable costs. Each sale contributes $30. The shop needs <strong>100 sales</strong> ($5,000 revenue) to break even. At 150 sales, estimated profit is <strong>$1,500</strong>.</p>
