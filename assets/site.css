@@ -218,3 +218,6 @@ input[aria-invalid="true"]:focus-visible{outline-color:#b33a2d}
 
 /* Keep long unbroken text inside secondary-page cards at narrow widths. */
 .inner-page .card,.inner-page article{overflow-wrap:anywhere}
+
+/* Keep long tool names and descriptions inside responsive cards. */
+.tool-card-title,.tool-card-desc{min-width:0;overflow-wrap:anywhere}
