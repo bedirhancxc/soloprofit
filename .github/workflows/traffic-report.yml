@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/traffic-report.yml'
+      - 'scripts/traffic_report.py'
   schedule:
     - cron: '39 * * * *'
 permissions:
