@@ -1,0 +1,62 @@
+name: Submit SoloProfit to Linkrena's free weekly launch once
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/submit-linkrena-once.yml']
+permissions:
+  contents: read
+jobs:
+  submit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Use Linkrena's documented public form endpoint one time
+        run: |
+          python3 - <<'PY'
+          import json
+          import urllib.parse
+          import urllib.error
+          import urllib.request
+
+          base = "https://linkrena.com"
+          site = "https://bedirhancxc.github.io/soloprofit/"
+          # The actual page uses these four keys; email is optional.
+          payload = {
+              "url": site,
+              "name": "SoloProfit",
+              "tagline": "Free browser calculators for business pricing, profit, and break-even",
+          }
+          headers = {
+              "User-Agent": "SoloProfit/1.0 (authorized free product launch)",
+              "Content-Type": "application/json",
+              "Accept": "application/json",
+              "Origin": base,
+              "Referer": base + "/submit",
+          }
+          req = urllib.request.Request(base + "/api/submit",
+                method="POST", data=json.dumps(payload).encode("utf-8"),
+                headers=headers)
+          try:
+              with urllib.request.urlopen(req,timeout=35) as response:
+                  code=response.status
+                  raw=response.read(25000).decode("utf-8","replace")
+          except urllib.error.HTTPError as e:
+              code=e.code
+              raw=e.read(25000).decode("utf-8","replace")
+          try:
+              result=json.loads(raw)
+          except ValueError:
+              raise SystemExit("Linkrena returned non-JSON, HTTP " + str(code))
+          print("Linkrena HTTP",code)
+          print("Response fields:",list(result)[:15] if isinstance(result,dict) else type(result).__name__)
+          if code not in (200,201,202):
+              if code==401:print("User login required despite public form; no retry")
+              else:print("Submission not accepted:",str(result.get("error") or result.get("message") or "unspecified")[:240])
+              raise SystemExit(1)
+          if isinstance(result,dict):
+              for key in ("message","status","alreadyListed","slug","id"):
+                  if key in result:print(key,":",str(result[key])[:200])
+              if result.get("slug"):
+                  print("POSSIBLE_PUBLIC_LISTING",base+"/tools/"+urllib.parse.quote(str(result["slug"]),safe=""))
+          print("Submission sent once. Editorial acceptance is not a website visit.")
+          PY
