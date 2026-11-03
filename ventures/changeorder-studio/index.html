@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#0c1220">
+  <meta name="description" content="Create professional change orders for freelance work in seconds. Calculate extra scope fees, track approvals, and stop losing money to endless revisions. No login required.">
+  <meta property="og:title" content="ChangeOrder Studio — Get paid for extra work">
+  <meta property="og:description" content="A free, private change order generator and tracker for freelancers. No account needed.">
+  <title>Free Change Order Generator for Freelancers | ChangeOrder Studio</title>
+  <style>
+    :root{font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color-scheme:dark;--bg:#090e18;--panel:#121c2e;--panel2:#182439;--border:#314056;--text:#f0f6ff;--muted:#adbccf;--aqua:#4ee0c1;--aqua2:#05291f;--danger:#ff8f93;--focus:#9cebd8}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 22% 0%,#13243a 0,transparent 36%),var(--bg);color:var(--text);line-height:1.55}button,input,textarea,select{font:inherit}button{cursor:pointer}a{color:var(--aqua)}a:hover{text-decoration:none}.wrap{max-width:1130px;margin:auto;padding:0 20px}
+    .top{display:flex;justify-content:space-between;align-items:center;gap:15px;padding:22px 0;border-bottom:1px solid #2b3748}.brand{font-size:1.1rem;font-weight:850;letter-spacing:-.04em;color:white;text-decoration:none}.brand span{color:var(--aqua)}.top nav{display:flex;gap:20px;flex-wrap:wrap}.top nav a{color:#b4c2d2;text-decoration:none;font-size:.89rem}.top nav a:hover{color:white}
+    .hero{padding:52px 0 34px}.eyebrow{display:inline-flex;border:1px solid #306b62;color:#95f5e1;padding:5px 11px;border-radius:999px;font-weight:700;font-size:.76rem;letter-spacing:.02em}h1,h2,h3,p{margin-top:0}h1{max-width:770px;font-size:clamp(2.5rem,5.6vw,4.7rem);line-height:1.07;letter-spacing:-.055em;margin:19px 0}h1 em{color:var(--aqua);font-style:normal}.hero p{max-width:680px;color:var(--muted);font-size:1.07rem;margin-bottom:25px}.hero-actions{display:flex;gap:11px;flex-wrap:wrap}
+    .btn{border-radius:10px;padding:10px 17px;border:1px solid var(--border);font-weight:740;background:#1b293e;color:#edf8ff;display:inline-flex;gap:9px;align-items:center;justify-content:center;text-decoration:none;transition:background .13s,transform .13s;white-space:normal}.btn:hover{background:#30405a}.btn-primary{background:var(--aqua);color:#06251e;border-color:var(--aqua)}.btn-primary:hover{background:#a3f5e0;transform:translateY(-1px)}.btn-small{font-size:.82rem;padding:7px 10px}.btn-danger{background:#3c1f27;color:#ffc0c2;border-color:#73434a}.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+    .trust{display:flex;gap:16px;flex-wrap:wrap;color:var(--muted);font-size:.83rem;margin:17px 0 0}.trust span::before{content:'✓';color:var(--aqua);margin-right:7px}
+    .stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:22px 0 24px}.stat{border:1px solid var(--border);background:#111b2c;border-radius:15px;padding:19px}.stat b{display:block;font-size:1.62rem;line-height:1.25;letter-spacing:-.05em;overflow-wrap:anywhere}.stat small{display:block;color:var(--muted);margin-top:5px}
+    .section-head{margin:18px 0 16px}.section-head h2{font-size:1.68rem;letter-spacing:-.04em;margin:0 0 5px}.muted{color:var(--muted)}.grid{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:19px;align-items:start}.panel{border:1px solid var(--border);border-radius:16px;background:linear-gradient(145deg,#142034,#111a29);padding:22px}.panel h3{font-size:1.09rem;letter-spacing:-.025em;margin-bottom:16px}.fields{display:grid;grid-template-columns:1fr 1fr;gap:13px}.field{display:flex;flex-direction:column;gap:6px;min-width:0}.field.full{grid-column:1/-1}.field label{font-size:.82rem;font-weight:750;color:#d5e1f0}.field input,.field select,.field textarea{width:100%;background:#0e1726;border:1px solid #405068;color:white;border-radius:9px;padding:10px 11px;min-height:44px;outline:none}.field textarea{min-height:77px;resize:vertical}.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--aqua);box-shadow:0 0 0 3px #4ee0c122}.help{font-size:.75rem;color:var(--muted)}.subhead{font-size:.78rem;color:#a3f1de;font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin:25px 0 11px}.toggle{display:flex;gap:9px;align-items:center;flex-wrap:wrap;margin-bottom:12px}.toggle label{border:1px solid #405068;border-radius:8px;padding:8px 13px;cursor:pointer;font-size:.84rem}.toggle input{accent-color:var(--aqua)}.form-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:17px}.error{color:#ffb1b4;margin:10px 0 0;min-height:20px;font-size:.84rem}
+    .preview{background:#eaf0f5;color:#142236;border-radius:12px;padding:24px;overflow-wrap:anywhere}.preview *{max-width:100%}.preview .paper-top{border-bottom:3px solid #1f856e;padding-bottom:13px;margin-bottom:16px;display:flex;justify-content:space-between;gap:10px;align-items:start}.preview h3{font-size:1.35rem;margin:0;color:#112735}.preview small{color:#485c6a}.preview .paper-title{font-size:.79rem;text-transform:uppercase;letter-spacing:.12em;font-weight:850;color:#28745e}.preview .paper-data{display:grid;grid-template-columns:1fr 1fr;gap:12px;font-size:.89rem;margin-bottom:15px}.preview strong{color:#102a34}.preview .paper-box{background:#d9e7ea;border-radius:9px;padding:13px;margin:12px 0}.preview .paper-box p{margin:0;white-space:pre-wrap}.preview .paper-line{display:flex;justify-content:space-between;border-bottom:1px solid #c1d0d5;padding:7px 0;gap:14px}.preview .paper-line.total{font-size:1.24rem;font-weight:850;color:#166c55;border-bottom:0}.preview .small-print{font-size:.7rem;color:#52636d;margin:15px 0 0}.preview .signature{display:flex;justify-content:space-between;gap:14px;margin-top:28px;padding-top:12px;border-top:1px solid #bacdd2;font-size:.77rem}.preview p,.preview div{overflow-wrap:anywhere}.preview-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}.hint{font-size:.81rem;color:var(--muted);margin-top:9px}.hidden{display:none!important}
+    .records{margin:20px 0 44px}.records-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:15px}.list{display:grid;gap:10px}.record{border:1px solid var(--border);background:#121e30;border-radius:12px;padding:17px;display:flex;justify-content:space-between;gap:16px;align-items:center}.record h3{font-size:.99rem;margin:0 0 5px}.record p{font-size:.81rem;color:var(--muted);margin:0}.record .record-right{display:flex;gap:9px;align-items:center;flex-wrap:wrap;justify-content:flex-end}.pill{border:1px solid #4d6175;color:#d7e5f3;padding:4px 9px;border-radius:999px;font-size:.75rem}.record select{padding:6px;border-radius:7px;background:#0e1726;color:white;border:1px solid #465972;font-size:.78rem}.empty{padding:25px;text-align:center;border:1px dashed #46566a;border-radius:13px;color:var(--muted)}.features{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;margin:24px 0 46px}.feature{background:#111b2a;border:1px solid #29394e;padding:22px;border-radius:14px}.feature b{display:block;margin-bottom:7px}.feature p{color:var(--muted);font-size:.88rem;margin:0}.faq{border-top:1px solid var(--border);padding:34px 0 48px}.faq details{padding:15px 0;border-bottom:1px solid #2a394c}.faq summary{font-weight:750;cursor:pointer}.faq p{color:var(--muted);margin:11px 0 3px;font-size:.9rem}.footer{border-top:1px solid var(--border);padding:22px 0 40px;color:#a4b4c7;font-size:.81rem;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+    :focus-visible{outline:2px solid var(--focus);outline-offset:3px}noscript{display:block;background:#5b2b31;padding:12px;text-align:center}
+    @media(max-width:800px){.grid{grid-template-columns:1fr}.stats,.features{grid-template-columns:1fr 1fr}.panel{padding:17px}.hero{padding-top:37px}.record{align-items:flex-start;flex-direction:column}.record .record-right{justify-content:flex-start}}
+    @media(max-width:500px){.top{align-items:flex-start}.top nav{gap:10px;justify-content:flex-end}.fields,.stats,.features{grid-template-columns:1fr}.preview{padding:15px}.preview .paper-data{grid-template-columns:1fr}.btn{width:100%}.hero-actions .btn{width:auto}.preview-actions .btn,.form-actions .btn{width:100%}.stat{padding:14px}.hero p{font-size:.99rem}}
+    @media print{body{background:#fff;color:#000}.top,.hero,.stats,.section-head,.form-panel,.preview-actions,.records,.features,.faq,.footer,.hint,.trust{display:none!important}.wrap{max-width:100%;padding:0}.grid{display:block}.preview-panel{padding:0;border:0;background:#fff}.preview{background:#fff;padding:0;color:#111;border-radius:0}.preview .paper-box{background:#eef5f5;print-color-adjust:exact}.preview .paper-line.total{color:#000} @page{size:A4;margin:17mm}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top"><a href="#top" class="brand">changeorder<span>.studio</span></a><nav><a href="#builder">Create a change order</a><a href="#ledger">My tracker</a><a href="#questions">FAQ</a></nav></header>
+    <main id="top">
+      <section class="hero">
+        <div class="eyebrow">FREE TOOL · PRIVATE BY DESIGN</div>
+        <h1>Stop doing <em>extra work</em> for free.</h1>
+        <p>That “one quick change” can cost you hours. Turn extra client requests into clear, priced change orders in under two minutes. Track every request without another spreadsheet.</p>
+        <div class="hero-actions"><a class="btn btn-primary" href="#builder">Create free change order →</a><a class="btn" href="#ledger">View my requests</a></div>
+        <div class="trust"><span>No signup</span><span>No credit card</span><span>Data stays in your browser</span><span>Print to PDF</span></div>
+      </section>
+      <section aria-label="Change order metrics" class="stats">
+        <div class="stat"><b id="stat-count">0</b><small>Requests saved</small></div>
+        <div class="stat"><b id="stat-approved">$0.00</b><small>Approved extras</small></div>
+        <div class="stat"><b id="stat-pending">$0.00</b><small>Awaiting approval</small></div>
+      </section>
+      <div class="section-head" id="builder"><h2>Build your change order</h2><p class="muted">Fill out the project and extra work details. Preview updates immediately.</p></div>
+      <div class="grid">
+        <section class="panel form-panel" aria-label="Change order editor">
+          <form id="editor" novalidate>
+            <div class="subhead">01 / The project</div>
+            <div class="fields">
+              <div class="field"><label for="freelancer">Your name or business</label><input id="freelancer" maxlength="100" autocomplete="organization" placeholder="North Studio"></div>
+              <div class="field"><label for="client">Client name</label><input id="client" maxlength="100" placeholder="Acme Co."></div>
+              <div class="field full"><label for="project">Project name <span aria-hidden="true">*</span></label><input id="project" maxlength="120" required placeholder="Website redesign"></div>
+              <div class="field full"><label for="originalScope">Original agreed scope</label><textarea id="originalScope" maxlength="1000" placeholder="5-page website with two revision rounds"></textarea></div>
+            </div>
+            <div class="subhead">02 / The new request</div>
+            <div class="fields">
+              <div class="field full"><label for="description">Additional work requested <span aria-hidden="true">*</span></label><textarea id="description" required maxlength="1200" placeholder="Add a blog section and update navigation"></textarea></div>
+              <div class="field"><label for="hours">Extra hours</label><input type="number" inputmode="decimal" id="hours" min="0" max="100000" step="0.25" value="5"></div>
+              <div class="field"><label for="rate">Hourly rate</label><input type="number" inputmode="decimal" id="rate" min="0" max="10000000" step="0.01" value="75"></div>
+              <div class="field"><label for="flatFee">Fixed extra fee (optional)</label><input type="number" inputmode="decimal" id="flatFee" min="0" max="100000000" step="0.01" placeholder="Overrides hours × rate"></div>
+              <div class="field"><label for="currency">Currency</label><select id="currency"><option value="USD">USD — $</option><option value="EUR">EUR — €</option><option value="GBP">GBP — £</option><option value="TRY">TRY — ₺</option><option value="CAD">CAD — C$</option><option value="AUD">AUD — A$</option></select></div>
+              <div class="field"><label for="days">Additional business days</label><input type="number" inputmode="numeric" id="days" min="0" max="10000" step="1" value="2"></div>
+              <div class="field"><label for="date">Requested on</label><input type="date" id="date"></div>
+              <div class="field full"><label for="conditions">Additional notes</label><textarea id="conditions" maxlength="800" placeholder="Work begins after written approval. Payment is due upon delivery."></textarea></div>
+            </div>
+            <p class="help">* Required to save. Fixed fee overrides hours × rate. Prices exclude taxes unless otherwise stated.</p>
+            <div class="form-actions"><button class="btn btn-primary" type="submit">Save to my tracker</button><button type="button" class="btn" id="clear-form">Clear form</button></div>
+            <p class="error" id="form-error" role="alert" aria-live="polite"></p>
+          </form>
+        </section>
+        <section class="panel preview-panel" aria-label="Printable change order preview">
+          <h3 class="preview-panel-title">Live document preview</h3>
+          <article class="preview" id="print-area">
+            <div class="paper-top"><div><div class="paper-title">Change order</div><h3 id="p-project">Your project</h3></div><small id="p-date">—</small></div>
+            <div class="paper-data"><div><small>PREPARED BY</small><br><strong id="p-freelancer">Your business</strong></div><div><small>PREPARED FOR</small><br><strong id="p-client">Your client</strong></div></div>
+            <div><small>ORIGINAL AGREEMENT</small><div class="paper-box"><p id="p-scope">Describe the original scope of work.</p></div></div>
+            <div><small>NEW WORK REQUESTED</small><div class="paper-box"><p id="p-description">Describe the additional work to be completed.</p></div></div>
+            <div class="paper-line"><span>Estimated effort</span><strong id="p-hours">5 hours</strong></div>
+            <div class="paper-line"><span>Additional timeline</span><strong id="p-days">2 business days</strong></div>
+            <div class="paper-line total"><span>Additional fee</span><span id="p-fee">$375.00</span></div>
+            <div><small>NOTES</small><p id="p-conditions" style="font-size:.86rem;white-space:pre-wrap">Work begins after written approval.</p></div>
+            <div class="signature"><div>Client approval: __________________</div><div>Date: __________________</div></div>
+            <p class="small-print">A proposed change order is not an accepted agreement until the parties confirm it. Check applicable contract and local legal requirements.</p>
+          </article>
+          <div class="preview-actions"><button type="button" class="btn btn-primary" id="print">Print / save PDF</button><button type="button" class="btn" id="copy">Copy approval message</button></div>
+          <p class="hint" id="copy-status" aria-live="polite">Printing uses your browser's built-in PDF option. No files are uploaded.</p>
+        </section>
+      </div>
+      <section id="ledger" class="records">
+        <div class="section-head"><h2>My change order tracker</h2><p class="muted">Save requests and track draft, sent, approved or declined status. Only stored on this device.</p></div>
+        <div class="records-bar"><div><button type="button" id="export" class="btn btn-small">Export backup (JSON)</button> <button type="button" id="import-button" class="btn btn-small">Import backup</button><input id="import-file" type="file" accept="application/json,.json" class="hidden" aria-label="Import JSON backup"></div><button class="btn btn-small btn-danger" type="button" id="erase">Delete all local data</button></div>
+        <div id="records" class="list" aria-live="polite"><div class="empty">No saved requests yet. Create your first change order above.</div></div>
+      </section>
+      <section class="features" aria-label="Benefits"><div class="feature"><b>💸 Price every extra</b><p>Turn “quick edits” into clear costs before you start work.</p></div><div class="feature"><b>📝 Ready to share</b><p>Copy a professional approval message or print a clean proposal PDF.</p></div><div class="feature"><b>🔒 Private by default</b><p>Records live in local browser storage, not on our servers. Export regularly.</p></div></section>
+      <section id="questions" class="faq"><h2>Frequently asked questions</h2><details><summary>What is a change order for freelancers?</summary><p>A change order documents work requested outside an original agreed scope, including its price and timeline impact. It helps both sides decide whether to approve extra work before it starts.</p></details><details><summary>Is this really free?</summary><p>Yes. This first release is free to use with no login, subscription or payment information.</p></details><details><summary>Where is my information stored?</summary><p>Records are saved in your current browser's local storage. Clearing site data or switching devices can remove them. Use Export backup to keep a copy. Imported JSON remains on this device.</p></details><details><summary>Does clicking “Approved” legally sign the change order?</summary><p>No. Tracker statuses are personal labels, not verified electronic signatures. Obtain client approval through the method required by your contract and local law.</p></details><details><summary>Can I use it on mobile?</summary><p>Yes. The editor and tracker adapt to narrow screens. To save a PDF, use your browser's Print or Share menu and select PDF when supported.</p></details></section>
+    </main>
+    <footer class="footer"><span>© <span id="year"></span> ChangeOrder Studio · Built for independent professionals.</span><span>Local-first · No analytics · No account · Not legal advice</span></footer>
+  </div>
+  <noscript>This application requires JavaScript to calculate prices and save requests.</noscript>
+  <script>
+  (()=>{'use strict';
+    const KEY='changeorder-studio-v1';
+    const $=id=>document.getElementById(id);
+    const fields=['freelancer','client','project','originalScope','description','hours','rate','flatFee','currency','days','date','conditions'];
+    const statusNames=['Draft','Sent','Approved','Declined'];
+    const maxRecords=250;
+    let records=[];
+    let storageOK=true;
+    const money=(amount,currency)=>new Intl.NumberFormat('en-US',{style:'currency',currency:currency||'USD',minimumFractionDigits:2,maximumFractionDigits:2}).format(Number(amount)||0);
+    const parseAmount=(value,max)=>{const n=Number(value);return Number.isFinite(n)&&n>=0&&n<=max?n:null;};
+    const txt=(id,value)=>$(id).textContent=String(value);
+    const clean=(v,len=1200)=>String(v??'').slice(0,len);
+    const isoToday=()=>{const d=new Date();return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
+    const validDate=v=>/^\d{4}-\d{2}-\d{2}$/.test(v)&&!Number.isNaN(new Date(`${v}T00:00:00`).getTime());
+    function readForm(){
+      const data={};fields.forEach(id=>data[id]=$(id).value);
+      const h=parseAmount(data.hours,100000),r=parseAmount(data.rate,10000000),days=parseAmount(data.days,10000);
+      const fixed=data.flatFee.trim()===''?null:parseAmount(data.flatFee,100000000);
+      const amount=fixed===null?((h??0)*(r??0)):fixed;
+      data.hours=h;data.rate=r;data.days=days;data.flatFee=fixed;
+      data.amount=Math.round(amount*100)/100;
+      return data;
+    }
+    function validate(v){
+      if(!v.project.trim()||!v.description.trim())return 'Please enter a project name and describe the extra work.';
+      if(v.hours===null||v.rate===null||v.days===null||(String($('flatFee').value).trim()!==''&&v.flatFee===null))return 'Hours, rate, fixed fee and extension days must be valid non-negative numbers.';
+      if(v.amount>1000000000)return 'The total amount is too large.';
+      if(!validDate(v.date))return 'Please select a valid date.';
+      if(!['USD','EUR','GBP','TRY','CAD','AUD'].includes(v.currency))return 'Please select a supported currency.';
+      return '';
+    }
+    function updatePreview(){
+      const v=readForm();
+      txt('p-project',v.project.trim()||'Your project');txt('p-freelancer',v.freelancer.trim()||'Your business');
+      txt('p-client',v.client.trim()||'Your client');txt('p-scope',v.originalScope.trim()||'Describe the original scope of work.');
+      txt('p-description',v.description.trim()||'Describe the additional work to be completed.');
+      txt('p-hours',`${v.hours??'—'} ${v.hours===1?'hour':'hours'}`);
+      txt('p-days',`${v.days??'—'} business ${v.days===1?'day':'days'}`);
+      txt('p-fee',money(v.amount,v.currency));txt('p-conditions',v.conditions.trim()||'Work begins after written approval.');
+      txt('p-date',validDate(v.date)?v.date:'—');
+    }
+    function storageWrite(){
+      if(!storageOK)return false;
+      try{localStorage.setItem(KEY,JSON.stringify(records));return true;}
+      catch(e){storageOK=false;return false;}
+    }
+    function validRecord(r){
+      if(!r||typeof r!=='object'||Array.isArray(r)||typeof r.id!=='string'||r.id.length>150||!statusNames.includes(r.status)||!['USD','EUR','GBP','TRY','CAD','AUD'].includes(r.currency))return false;
+      if(typeof r.project!=='string'||r.project.length>120||typeof r.description!=='string'||r.description.length>1200)return false;
+      if(parseAmount(r.amount,1000000000)===null)return false;
+      if(!validDate(r.date))return false;
+      return true;
+    }
+    function initRecords(){try{const data=JSON.parse(localStorage.getItem(KEY)||'[]');records=Array.isArray(data)?data.filter(validRecord).slice(0,maxRecords):[];}
+      catch(e){records=[];storageOK=false;txt('form-error','Browser storage is unavailable. You can still print or copy a change order.');}}
+    function metrics(){
+      txt('stat-count',records.length);
+      const approved=records.filter(r=>r.status==='Approved');const pending=records.filter(r=>r.status==='Sent');
+      const formatTotals=(rows)=>{const totals=new Map();rows.forEach(r=>totals.set(r.currency,(totals.get(r.currency)||0)+r.amount));return [...totals].map(([c,n])=>money(n,c)).join(' + ')||money(0,'USD');};
+      txt('stat-approved',formatTotals(approved));txt('stat-pending',formatTotals(pending));
+    }
+    function makeButton(label,onClick,cls='btn btn-small'){const b=document.createElement('button');b.type='button';b.className=cls;b.textContent=label;b.addEventListener('click',onClick);return b;}
+    function render(){
+      metrics();const node=$('records');node.replaceChildren();
+      if(records.length===0){const empty=document.createElement('div');empty.className='empty';empty.textContent='No saved requests yet. Create your first change order above.';node.append(empty);return;}
+      [...records].reverse().forEach(r=>{
+        const row=document.createElement('article');row.className='record';const info=document.createElement('div');
+        const heading=document.createElement('h3');heading.textContent=r.project||'Untitled project';
+        const description=document.createElement('p');description.textContent=`${r.client||'No client'} · ${r.date} · ${clean(r.description,90)}`;
+        info.append(heading,description);
+        const right=document.createElement('div');right.className='record-right';
+        const amount=document.createElement('strong');amount.textContent=money(r.amount,r.currency);
+        const status=document.createElement('select');status.setAttribute('aria-label','Status for '+r.project);
+        statusNames.forEach(n=>{const option=document.createElement('option');option.value=n;option.textContent=n;status.append(option);});status.value=r.status;
+        status.addEventListener('change',()=>{const prev=r.status;r.status=status.value;if(!storageWrite()){r.status=prev;status.value=prev;alert('Could not save this change. Browser storage may be disabled or full.');return;}render();});
+        const reopen=makeButton('Open',()=>{fields.forEach(id=>{if(id==='flatFee')$(id).value=r[id]===null?'':r[id];else $(id).value=r[id]??'';});updatePreview();$('builder').scrollIntoView({behavior:'smooth'});});
+        const remove=makeButton('Delete',()=>{if(!confirm('Delete this saved request?'))return;records=records.filter(x=>x.id!==r.id);storageWrite();render();},'btn btn-small btn-danger');
+        right.append(amount,status,reopen,remove);row.append(info,right);node.append(row);
+      });
+    }
+    function message(){const v=readForm();return `Hi ${v.client.trim()||'there'},\n\nThanks for the additional request for ${v.project.trim()||'our project'}.\n\nNew scope: ${v.description.trim()||'[describe extra work]'}\nAdditional fee: ${money(v.amount,v.currency)}\nTimeline adjustment: ${v.days??0} business day(s).\n\nThis is outside our original agreed scope. Please confirm your approval of the additional fee and timeline in writing before I begin.\n\nThanks,\n${v.freelancer.trim()||'[Your name]'}`;}
+    async function copyMessage(){const value=message();try{await navigator.clipboard.writeText(value);txt('copy-status','Approval message copied to clipboard.');}catch(e){const ta=document.createElement('textarea');ta.value=value;ta.style.position='fixed';ta.style.left='-9999px';document.body.append(ta);ta.select();let ok=false;try{ok=document.execCommand('copy');}catch(err){}ta.remove();txt('copy-status',ok?'Approval message copied to clipboard.':'Clipboard unavailable. Select and copy the document text manually.');}}
+    $('date').value=isoToday();$('year').textContent=new Date().getFullYear();
+    fields.forEach(id=>$(id).addEventListener('input',updatePreview));
+    $('currency').addEventListener('change',updatePreview);
+    $('editor').addEventListener('submit',e=>{e.preventDefault();const v=readForm();const error=validate(v);if(error){txt('form-error',error);return;}
+      if(records.length>=maxRecords){txt('form-error','Tracker limit reached (250). Export a backup and delete older records.');return;}
+      const id=typeof crypto!=='undefined'&&crypto.randomUUID?crypto.randomUUID():`${Date.now()}-${Math.random().toString(36).slice(2)}`;
+      records.push({...v,id,status:'Draft',savedAt:new Date().toISOString()});
+      if(!storageWrite()){records.pop();txt('form-error','Could not save. Browser storage is unavailable or full. Print or copy the proposal instead.');return;}
+      txt('form-error','Saved locally to your tracker.');render();$('ledger').scrollIntoView({behavior:'smooth'});
+    });
+    $('clear-form').addEventListener('click',()=>{if(!confirm('Clear the current editor? Saved requests will remain.'))return;$('editor').reset();$('date').value=isoToday();txt('form-error','');updatePreview();});
+    $('copy').addEventListener('click',copyMessage);
+    $('print').addEventListener('click',()=>window.print());
+    $('erase').addEventListener('click',()=>{if(records.length===0)return;if(!confirm('Permanently delete all saved requests from this browser? Export a backup first.'))return;records=[];storageWrite();render();});
+    $('export').addEventListener('click',()=>{const blob=new Blob([JSON.stringify({product:'ChangeOrder Studio',version:1,exportedAt:new Date().toISOString(),records},null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download=`changeorder-backup-${isoToday()}.json`;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);});
+    $('import-button').addEventListener('click',()=>$('import-file').click());
+    $('import-file').addEventListener('change',async e=>{const file=e.target.files?.[0];e.target.value='';if(!file)return;if(file.size>2*1024*1024){alert('Backup is too large (maximum 2 MB).');return;}
+      try{const obj=JSON.parse(await file.text());if(obj?.product!=='ChangeOrder Studio'||obj.version!==1||!Array.isArray(obj.records)||obj.records.length>maxRecords||!obj.records.every(validRecord))throw new Error('Invalid backup format');
+        if(!confirm(`Import ${obj.records.length} records? This will replace your current tracker.`))return;
+        const previous=records;records=obj.records;if(!storageWrite()){records=previous;throw new Error('Browser storage is unavailable');}render();alert('Backup imported successfully.');
+      }catch(err){alert('Import failed: '+(err.message||'Invalid file'));}
+    });
+    initRecords();render();updatePreview();
+  })();
+  </script>
+</body>
+</html>
