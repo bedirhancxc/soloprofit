@@ -1,0 +1,37 @@
+name: One-time .com availability verification for new device comparison brand
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/temporary-domain-availability-20261103.yml']
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 6
+    steps:
+      - name: Check Verisign .com authoritative RDAP records
+        run: |
+          python3 - <<'PY'
+          import json, urllib.request, urllib.error, concurrent.futures, time
+          names="""Veytrio Veytora Veylumo Veykoro Veyvora Veyzora Tekvoro Tekvexa Teklumo Tekrivo Tekmivo Tekzora Tevoria Nexlavo Nexmoro Nexkora Nexvora Nexlory Zorvexa Zorvilo Zovetra Zevrilo Zevorio Zivorix Vekoria Vekorio Velmoro Velqora Levqora Pexvoro Pikvoro Dexvori Kivomax Kivexo Vaytrio Cevlora Cevoro Telviro Vexpora Veyrona Nexvoria Zenvoro Vexmora Tekvoria""".lower().split()
+          def check(name):
+              domain=name+".com"
+              u="https://rdap.verisign.com/com/v1/domain/"+domain
+              req=urllib.request.Request(u,headers={"User-Agent":"SoloProfit-domain-availability-research/1.0 (noncommercial)","Accept":"application/rdap+json"})
+              try:
+                  with urllib.request.urlopen(req,timeout=15) as r:
+                      if r.status==200:
+                          data=json.loads(r.read(40000))
+                          return domain,"REGISTERED",data.get("ldhName", "")
+                      return domain,"UNKNOWN",str(r.status)
+              except urllib.error.HTTPError as e:
+                  if e.code==404:return domain,"NOT_REGISTERED","RDAP 404"
+                  return domain,"UNKNOWN","HTTP "+str(e.code)
+              except Exception as e:return domain,"UNKNOWN",str(e)[:120]
+          print("REGISTRY_CHECK_BEGIN")
+          with concurrent.futures.ThreadPoolExecutor(max_workers=4) as pool:
+              for domain,status,note in pool.map(check,names):
+                  print("DOMAIN",domain,status,note)
+          print("NOTE: NOT_REGISTERED denotes absence in Verisign .com RDAP at check time; registrar purchase eligibility and trademark clearance require confirmation.")
+          PY
