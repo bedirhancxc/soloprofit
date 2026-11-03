@@ -47,7 +47,7 @@ jobs:
               try:
                   with urllib.request.urlopen(urllib.request.Request(urllib.parse.urljoin(url,src),headers={"User-Agent":"Mozilla/5.0"}),timeout=20) as response:
                       js=response.read(250000).decode("utf-8","replace")
-                  for needle in ("/api/submit","/api/tools","fetch(","submitTool"):
+                  for needle in ("/api/submit-tool","Security verification","turnstile","captcha","sitekey","token","formData","cf-turnstile"):
                       hits=[m.start() for m in re.finditer(re.escape(needle),js)]
                       if hits:print("JS_MATCH",src,needle,len(hits),[js[max(0,k-100):k+300] for k in hits[:3]])
               except Exception as e:print("SCRIPT_READ_ERROR",src,type(e).__name__,str(e)[:100])
