@@ -72,7 +72,7 @@ assert.ok(analytics.includes("capture_pageview: false"), "No unsanitized automat
 assert.ok(analytics.includes("$referring_domain: referrer"), "Record only referring domains");
 assert.doesNotMatch(analytics, /phx_[A-Za-z0-9]{8,}/, "Never expose private PostHog API key");
 for (const url of urls) {
-  const suffix = new URL(url).pathname.replace(/^\\/soloprofit\\/?/, "");
+  const suffix = new URL(url).pathname.slice("/soloprofit/".length);
   const file = path.join(suffix, "index.html");
   const html = fs.readFileSync(file, "utf8");
   const analyticsPath = suffix ? "../assets/analytics.js" : "assets/analytics.js";
