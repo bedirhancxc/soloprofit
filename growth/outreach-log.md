@@ -19,6 +19,9 @@
 | FlowPath | Relevant tool-review email sent | No reply verified |
 | Fr. Tools | Relevant tool-review email sent | No reply verified |
 | Calculators Cloud | Free editorial article pitch sent (markup vs. margin) | Pending editorial response; no follow-up spam |
+| EpicTools | Direct editorial submission email sent 2026-11-03 | Official editor invitation at https://epictools.dev/submit; no listing approval or website visit confirmed |
+| Linkrena | Free launch API returned HTTP 401 on 2026-11-03 | Official site advertised account-free listing, but endpoint required sign-in. No retry or bypass; no public listing |
+| NoUploadTools | Investigated, not submitted | Official tool submit form requires Cloudflare Turnstile challenge; do not bypass. |
 
 ## Autonomous agent coordination
 
@@ -36,3 +39,5 @@ Do not add new calculator pages, buy traffic, generate artificial visits or revi
 2. Use only permissioned, relevant communities/resource editors for new discovery.
 3. When PostHog is connected and a **public** project token activated, privately report daily estimated unique visitors and source breakdown; clearly flag bots and data limitations.
 4. Evaluate search indexing in the owner's Search Console; a live HTTP 200 and sitemap alone do not prove indexing or ranking.
+
+**Repository discovery audit (2026-11-03):** GitHub repository metadata had empty description, homepage URL, topic tags, and no OSI license; the connected GitHub integration cannot directly change repository settings. Do not mislabel the repository open source until the owner chooses a license. This limits discovery in GitHub search and eligibility for some curated open-source directories.
