@@ -234,3 +234,6 @@ input[aria-invalid="true"]:focus-visible{outline-color:#b33a2d}
 
 /* Keep the keyboard skip link within narrow or zoomed viewports. */
 .skip-link{max-width:calc(100vw - 24px);white-space:normal;overflow-wrap:anywhere}
+
+/* Keep benefit badges and instructional steps within narrow/zoomed viewports. */
+.trust-row span,.step{min-width:0;overflow-wrap:anywhere}
