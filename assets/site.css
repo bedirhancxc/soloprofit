@@ -210,8 +210,8 @@ input[aria-invalid="true"]:focus-visible{outline-color:#b33a2d}
 /* Keep in-page navigation headings readable instead of flush against the viewport edge. */
 #quick-calculators,#all-tools,#how-it-works{scroll-margin-top:20px}
 
-/* Let the header brand shrink at narrow widths and increased text zoom. */
-@media(max-width:420px){
+/* Let the header brand wrap on phones and at increased text zoom. */
+@media(max-width:620px){
   .brand{min-width:0;max-width:100%;white-space:normal;overflow-wrap:anywhere;line-height:1.2}
   .brand-mark{flex:none}
 }
